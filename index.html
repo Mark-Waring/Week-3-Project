@@ -66,7 +66,7 @@
       <div class="buttons numbers">4</div>
       <div class="buttons numbers">5</div>
       <div class="buttons numbers">6</div>
-      <div class="buttons calculate" id="multiply">x</div>
+      <div class="buttons calculate" id="multiply">*</div>
       <div class="buttons numbers">1</div>
       <div class="buttons numbers">2</div>
       <div class="buttons numbers">3</div>
@@ -86,76 +86,141 @@
       let calculationDisplay = document.getElementById("calc-display-1");
       let equalsButton = document.getElementById("equals");
 
-      ButtonsPressed();
-      function ButtonsPressed() {
+      numberButtonPressed();
+      function numberButtonPressed() {
         for (let i = 0; i < numberButtons.length; i++) {
           numberButtons[i].addEventListener("click", function () {
-            if (mainDisplay.innerText === "0")
-              mainDisplay.innerText = this.innerText;
-            else mainDisplay.innerText += this.innerText;
-          });
-        }
-        for (let i = 0; i < operatorButtons.length; i++) {
-          operatorButtons[i].addEventListener("click", function (e) {
             if (
-              calculationDisplay.innerText === "" &&
-              mainDisplay.innerText === "0"
+              mainDisplay.innerText === "0" &&
+              calculationDisplay.innerText === ""
             )
-              calculationDisplay.innerText = "0 " + this.innerText;
+              mainDisplay.innerText = this.innerText;
             else if (
-              calculationDisplay.innerText === "" &&
-              mainDisplay.innerText !== "0"
+              mainDisplay.innerText !== "0" &&
+              calculationDisplay.innerText === ""
             )
-              calculationDisplay.innerText =
-                mainDisplay.innerText + " " + this.innerText;
-            else if (calculationDisplay !== "") {
-              if (calculationDisplay.innerText.substr(-1, 1) === "+") {
-                let valueX = parseInt(calculationDisplay.innerText, 10);
-                let valueY = parseInt(mainDisplay.innerText, 10);
-                let valueZ = valueX + valueY;
-                console.log(valueZ);
-                mainDisplay.innerText = valueZ;
-                calculationDisplay.innerText = mainDisplay.innerText = " +";
-              }
-              //   if (calculationDisplay.innerText.substr(-1, 1) === "-")
-              //     mainDisplay.innerText = valueX - valueY;
-              //   if (calculationDisplay.innerText.substr(-1, 1) === "x")
-              //     mainDisplay.innerText = valueX * valueY;
-              //   if (calculationDisplay.innerText.substr(-1, 1) === "/")
-              //     mainDisplay.innerText = valueX / valueY;
-              //   calculationDisplay.innerText += valueZ + " =";
-            }
-
-            // )
-            //   calculationDisplay.innerText = mainDisplay.innerText;
-            // else if (calculationDisplay.innerText.substr(-1, 1) === "+")
-            //   mainDisplay.innerText = value1 + value2;
-            // else if (calculationDisplay.innerText.substr(-1, 1) === "-")
-            //   mainDisplay.innerText = value1 - value2;
-            // else if (calculationDisplay.innerText.substr(-1, 1) === "x")
-            //   mainDisplay.innerText = value1 * value2;
-            // else if (calculationDisplay.innerText.substr(-1, 1) === "/")
-            //   mainDisplay.innerText = value1 / value2;
-            // calculationDisplay.innerText += value3 + " =";
-            // let value1 = parseInt(calculationDisplay.innerText, 10);
-
-            equalsButton.addEventListener("click", function (equalsClick) {
-              let value2 = parseInt(mainDisplay.innerText, 10);
-              let value3 = " " + value2;
-              if (calculationDisplay.innerText.substr(-1, 1) === "+")
-                mainDisplay.innerText = value1 + value2;
-              if (calculationDisplay.innerText.substr(-1, 1) === "-")
-                mainDisplay.innerText = value1 - value2;
-              if (calculationDisplay.innerText.substr(-1, 1) === "x")
-                mainDisplay.innerText = value1 * value2;
-              if (calculationDisplay.innerText.substr(-1, 1) === "/")
-                mainDisplay.innerText = value1 / value2;
-              calculationDisplay.innerText += value3 + " =";
-            });
-            mainDisplay.innerText = "";
+              mainDisplay.innerText += this.innerText;
+            else if (
+              mainDisplay.innerText === "0" ||
+              calculationDisplay.innerText.substr(-1, 1) === "+" ||
+              calculationDisplay.innerText.substr(-1, 1) === "-" ||
+              calculationDisplay.innerText.substr(-1, 1) === "*" ||
+              calculationDisplay.innerText.substr(-1, 1) === "/"
+            )
+              mainDisplay.innerText = this.innerText;
           });
         }
       }
+
+      for (let i = 0; i < operatorButtons.length; i++) {
+        operatorButtons[i].addEventListener("click", function () {
+          if (
+            calculationDisplay.innerText === "" &&
+            mainDisplay.innerText === "0"
+          )
+            calculationDisplay.innerText = "0 " + this.innerText;
+          else if (
+            calculationDisplay.innerText === "" &&
+            mainDisplay.innerText !== "0"
+          )
+            calculationDisplay.innerText =
+              mainDisplay.innerText + " " + this.innerText;
+          else if (calculationDisplay.innerText.substr(-1, 1) === "+") {
+            let plusX = parseInt(calculationDisplay.innerText, 10);
+            let plusY = parseInt(mainDisplay.innerText, 10);
+            let plusZ = plusX + plusY;
+            console.log("second plus click logged");
+            console.log(plusZ);
+            mainDisplay.innerText = plusZ;
+            calculationDisplay.innerText = plusZ + " " + this.innerText;
+          } else if (calculationDisplay.innerText.substr(-1, 1) === "-") {
+            let minusX = parseInt(calculationDisplay.innerText, 10);
+            let minusY = parseInt(mainDisplay.innerText, 10);
+            let minusZ = minusX - minusY;
+            console.log("second minus click logged");
+            console.log(minusZ);
+            mainDisplay.innerText = minusZ;
+            calculationDisplay.innerText = minusZ + " " + this.innerText;
+          } else if (calculationDisplay.innerText.substr(-1, 1) === "*") {
+            let multiplyX = parseInt(calculationDisplay.innerText, 10);
+            let multiplyY = parseInt(mainDisplay.innerText, 10);
+            let multiplyZ = multiplyX * multiplyY;
+            console.log("second multiply click logged");
+            console.log(multiplyZ);
+            mainDisplay.innerText = multiplyZ;
+            calculationDisplay.innerText = multiplyZ + " " + this.innerText;
+          } else if (calculationDisplay.innerText.substr(-1, 1) === "/") {
+            let divideX = parseInt(calculationDisplay.innerText, 10);
+            let divideY = parseInt(mainDisplay.innerText, 10);
+            let divideZ = divideX / divideY;
+            console.log("second divide click logged");
+            console.log(divideZ);
+            mainDisplay.innerText = divideZ;
+            calculationDisplay.innerText = divideZ + " " + this.innerText;
+          }
+        });
+      }
+
+      equalsButton.addEventListener("click", function (equalsClick) {
+        let value1 = parseInt(calculationDisplay.innerText, 10);
+        let value2 = parseInt(mainDisplay.innerText, 10);
+        let value3 = " " + value2;
+        if (calculationDisplay.innerText.substr(-1, 1) === "+")
+          mainDisplay.innerText = value1 + value2;
+        if (calculationDisplay.innerText.substr(-1, 1) === "-")
+          mainDisplay.innerText = value1 - value2;
+        if (calculationDisplay.innerText.substr(-1, 1) === "*")
+          mainDisplay.innerText = value1 * value2;
+        if (calculationDisplay.innerText.substr(-1, 1) === "/")
+          mainDisplay.innerText = value1 / value2;
+        calculationDisplay.innerText += value3 + " =";
+        // nextCalculation();
+      });
+
+      //   function nextNumberPressed() {
+      //     for (let i = 0; i < operatorButtons.length; i++) {
+      //       operatorButtons[i].addEventListener("click", function () {
+      //         calculationDisplay.innerText = mainDisplay.innerText;
+      //       });
+      //     }
+      //     if (
+      //       mainDisplay.innerText === "0" ||
+      //       calculationDisplay.innerText.substr(-1, 1) === "+" ||
+      //       calculationDisplay.innerText.substr(-1, 1) === "-" ||
+      //       calculationDisplay.innerText.substr(-1, 1) === "*" ||
+      //       calculationDisplay.innerText.substr(-1, 1) === "/"
+      //     )
+      //       mainDisplay.innerText = this.innerText;
+      //   }
+
+      //   function nextCalculation() {
+      //     for (let i = 0; i < numberButtons.length; i++) {
+      //       operatorButtons[i].addEventListener("click", function () {
+      //         calculationDisplay.innerText = mainDisplay.innerText;
+      //       });
+      //     }
+      //   }
+
+      //   if (calculationDisplay.innerText.substr(-1, 1) === "-")
+      //     mainDisplay.innerText = valueX - valueY;
+      //   if (calculationDisplay.innerText.substr(-1, 1) === "x")
+      //     mainDisplay.innerText = valueX * valueY;
+      //   if (calculationDisplay.innerText.substr(-1, 1) === "/")
+      //     mainDisplay.innerText = valueX / valueY;
+      //   calculationDisplay.innerText += valueZ + " =";
+
+      // )
+      //   calculationDisplay.innerText = mainDisplay.innerText;
+      // else if (calculationDisplay.innerText.substr(-1, 1) === "+")
+      //   mainDisplay.innerText = value1 + value2;
+      // else if (calculationDisplay.innerText.substr(-1, 1) === "-")
+      //   mainDisplay.innerText = value1 - value2;
+      // else if (calculationDisplay.innerText.substr(-1, 1) === "x")
+      //   mainDisplay.innerText = value1 * value2;
+      // else if (calculationDisplay.innerText.substr(-1, 1) === "/")
+      //   mainDisplay.innerText = value1 / value2;
+      // calculationDisplay.innerText += value3 + " =";
+      // let value1 = parseInt(calculationDisplay.innerText, 10);
 
       //   function firstOperatorPressed() {
       //     for (let i = 0; i < calculateButtons.length; i++) {
