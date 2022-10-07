@@ -85,7 +85,6 @@
       let calculationDisplay1 = document.getElementById("calc-display-1");
       let calculationDisplay = document.getElementById("calc-display-1");
       let equalsButton = document.getElementById("equals");
-      let plusButton = document.getElementById("equals");
 
       ButtonsPressed();
       function ButtonsPressed() {
@@ -110,13 +109,13 @@
               calculationDisplay.innerText =
                 mainDisplay.innerText + " " + this.innerText;
             else if (calculationDisplay !== "") {
-              let valueX = parseInt(calculationDisplay.innerText, 10);
-              let valueY = parseInt(mainDisplay.innerText, 10);
               if (calculationDisplay.innerText.substr(-1, 1) === "+") {
+                let valueX = parseInt(calculationDisplay.innerText, 10);
+                let valueY = parseInt(mainDisplay.innerText, 10);
                 let valueZ = valueX + valueY;
                 console.log(valueZ);
                 mainDisplay.innerText = valueZ;
-                // calculationDisplay.innerText = mainDisplay.innerText = " +";
+                calculationDisplay.innerText = mainDisplay.innerText = " +";
               }
               //   if (calculationDisplay.innerText.substr(-1, 1) === "-")
               //     mainDisplay.innerText = valueX - valueY;
