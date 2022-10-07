@@ -77,70 +77,83 @@
       <div class="buttons" id="equals">=</div>
     </div>
     <script>
-      displayScreen = document.getElementById("display-screen");
-      displayScreen.innerText = "0";
+      mainDisplay = document.getElementById("display-screen");
+      mainDisplay.innerText = "0";
       let buttons = document.getElementsByClassName("buttons");
       let numberButtons = document.getElementsByClassName("numbers");
       let operatorButtons = document.getElementsByClassName("calculate");
       let calculationDisplay1 = document.getElementById("calc-display-1");
       let calculationDisplay = document.getElementById("calc-display-1");
       let equalsButton = document.getElementById("equals");
+      let plusButton = document.getElementById("equals");
 
       ButtonsPressed();
       function ButtonsPressed() {
         for (let i = 0; i < numberButtons.length; i++) {
           numberButtons[i].addEventListener("click", function () {
-            if (displayScreen.innerText === "0")
-              displayScreen.innerText = this.innerText;
-            else displayScreen.innerText += this.innerText;
+            if (mainDisplay.innerText === "0")
+              mainDisplay.innerText = this.innerText;
+            else mainDisplay.innerText += this.innerText;
           });
         }
         for (let i = 0; i < operatorButtons.length; i++) {
           operatorButtons[i].addEventListener("click", function (e) {
             if (
               calculationDisplay.innerText === "" &&
-              displayScreen.innerText === "0"
+              mainDisplay.innerText === "0"
             )
               calculationDisplay.innerText = "0 " + this.innerText;
             else if (
               calculationDisplay.innerText === "" &&
-              displayScreen.innerText !== "0"
+              mainDisplay.innerText !== "0"
             )
               calculationDisplay.innerText =
-                displayScreen.innerText + " " + this.innerText;
-            else if (
-              calculationDisplay.innerText.substr(-1, 1) !== "+" &&
-              calculationDisplay.innerText.substr(-1, 1) !== "-" &&
-              calculationDisplay.innerText.substr(-1, 1) !== "x" &&
-              calculationDisplay.innerText.substr(-1, 1) !== "/"
-            )
-              // )
-              //   calculationDisplay.innerText = displayScreen.innerText;
-              // else if (calculationDisplay.innerText.substr(-1, 1) === "+")
-              //   displayScreen.innerText = value1 + value2;
-              // else if (calculationDisplay.innerText.substr(-1, 1) === "-")
-              //   displayScreen.innerText = value1 - value2;
-              // else if (calculationDisplay.innerText.substr(-1, 1) === "x")
-              //   displayScreen.innerText = value1 * value2;
-              // else if (calculationDisplay.innerText.substr(-1, 1) === "/")
-              //   displayScreen.innerText = value1 / value2;
-              // calculationDisplay.innerText += value3 + " =";
-              // let value1 = parseInt(calculationDisplay.innerText, 10);
+                mainDisplay.innerText + " " + this.innerText;
+            else if (calculationDisplay !== "") {
+              let valueX = parseInt(calculationDisplay.innerText, 10);
+              let valueY = parseInt(mainDisplay.innerText, 10);
+              if (calculationDisplay.innerText.substr(-1, 1) === "+") {
+                let valueZ = valueX + valueY;
+                console.log(valueZ);
+                mainDisplay.innerText = valueZ;
+                // calculationDisplay.innerText = mainDisplay.innerText = " +";
+              }
+              //   if (calculationDisplay.innerText.substr(-1, 1) === "-")
+              //     mainDisplay.innerText = valueX - valueY;
+              //   if (calculationDisplay.innerText.substr(-1, 1) === "x")
+              //     mainDisplay.innerText = valueX * valueY;
+              //   if (calculationDisplay.innerText.substr(-1, 1) === "/")
+              //     mainDisplay.innerText = valueX / valueY;
+              //   calculationDisplay.innerText += valueZ + " =";
+            }
 
-              equalsButton.addEventListener("click", function (equalsClick) {
-                let value2 = parseInt(displayScreen.innerText, 10);
-                let value3 = " " + value2;
-                if (calculationDisplay.innerText.substr(-1, 1) === "+")
-                  displayScreen.innerText = value1 + value2;
-                if (calculationDisplay.innerText.substr(-1, 1) === "-")
-                  displayScreen.innerText = value1 - value2;
-                if (calculationDisplay.innerText.substr(-1, 1) === "x")
-                  displayScreen.innerText = value1 * value2;
-                if (calculationDisplay.innerText.substr(-1, 1) === "/")
-                  displayScreen.innerText = value1 / value2;
-                calculationDisplay.innerText += value3 + " =";
-              });
-            displayScreen.innerText = "";
+            // )
+            //   calculationDisplay.innerText = mainDisplay.innerText;
+            // else if (calculationDisplay.innerText.substr(-1, 1) === "+")
+            //   mainDisplay.innerText = value1 + value2;
+            // else if (calculationDisplay.innerText.substr(-1, 1) === "-")
+            //   mainDisplay.innerText = value1 - value2;
+            // else if (calculationDisplay.innerText.substr(-1, 1) === "x")
+            //   mainDisplay.innerText = value1 * value2;
+            // else if (calculationDisplay.innerText.substr(-1, 1) === "/")
+            //   mainDisplay.innerText = value1 / value2;
+            // calculationDisplay.innerText += value3 + " =";
+            // let value1 = parseInt(calculationDisplay.innerText, 10);
+
+            equalsButton.addEventListener("click", function (equalsClick) {
+              let value2 = parseInt(mainDisplay.innerText, 10);
+              let value3 = " " + value2;
+              if (calculationDisplay.innerText.substr(-1, 1) === "+")
+                mainDisplay.innerText = value1 + value2;
+              if (calculationDisplay.innerText.substr(-1, 1) === "-")
+                mainDisplay.innerText = value1 - value2;
+              if (calculationDisplay.innerText.substr(-1, 1) === "x")
+                mainDisplay.innerText = value1 * value2;
+              if (calculationDisplay.innerText.substr(-1, 1) === "/")
+                mainDisplay.innerText = value1 / value2;
+              calculationDisplay.innerText += value3 + " =";
+            });
+            mainDisplay.innerText = "";
           });
         }
       }
@@ -148,12 +161,12 @@
       //   function firstOperatorPressed() {
       //     for (let i = 0; i < calculateButtons.length; i++) {
       //       calculateButtons[i].addEventListener("click", function () {
-      //         return displayScreen.innerText;
+      //         return mainDisplay.innerText;
       //       });
       //     }
       //   }
 
-      //   console.log(displayScreen.innerText);
+      //   console.log(mainDisplay.innerText);
 
       //   function mathOperator() {
       //     for (let i = 0; i < calculateButtons.length; i++) {
@@ -167,10 +180,10 @@
       //     for (let i = 0; i < numberButtons.length; i++) {
       //       numberButtons[i].addEventListener("click", function () {
       //         console.log(this.innerText + " clicked.");
-      //         if (displayScreen.innerText === "0") {
-      //           displayScreen.innerText = this.innerText;
+      //         if (mainDisplay.innerText === "0") {
+      //           mainDisplay.innerText = this.innerText;
       //         } else {
-      //           displayScreen.innerText += this.innerText;
+      //           mainDisplay.innerText += this.innerText;
       //         }
       //       });
       //     }
@@ -191,17 +204,17 @@
 
       //   //   function calculation() {
       //   //     firstNumberEntry + currentNumberEntry;
-      //   //     displayScreen.innerText = calculation;
+      //   //     mainDisplay.innerText = calculation;
       //   //     return calculation;
       //   //   }
 
       //   //   calculation();
 
-      //   //   if(displayScreen.innerText === "0"){
-      //   //               displayScreen.innerText = this.innerText;
+      //   //   if(mainDisplay.innerText === "0"){
+      //   //               mainDisplay.innerText = this.innerText;
       //   //             }
       //   //             else
-      //   //             {displayScreen.innerText += this.innerText;
+      //   //             {mainDisplay.innerText += this.innerText;
       //   //           });
       //   //         }
 
