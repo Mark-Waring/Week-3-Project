@@ -21,7 +21,7 @@
       }
 
       #calc-display {
-        display: none;
+        /* display: none; */
       }
 
       #display-screen {
@@ -83,12 +83,23 @@
       let deleteButton = document.getElementById("delete");
       let decimalButton = document.getElementById("decimal");
       let waitingInput = false;
-      let equalsClicked = false;
+      let postPlusEquals = false;
+      let postMinusEquals = false;
+      let postMultiplyEquals = false;
+      let postDivideEquals = false;
+      let postPlus = false;
+      let postMinusPlus = false;
+      let postMultiplyPlus = false;
+      let postDividePlus = false;
+      let operatorClicked = false;
 
       numberButtonPressed();
       function numberButtonPressed() {
         for (let i = 0; i < numberButtons.length; i++) {
           numberButtons[i].addEventListener("click", function () {
+            operatorClicked = false;
+            console.log("operator clicked false");
+
             if (
               mainDisplay.innerText === "0" &&
               calculationDisplay.innerText === ""
@@ -136,10 +147,10 @@
             let plusY = parseFloat(mainDisplay.innerText, 10);
             let plusZ = plusX + plusY;
             let parseZ = parseFloat(plusZ);
-            console.log("second plus click logged");
             console.log(plusZ);
             mainDisplay.innerText = parseZ;
             calculationDisplay.innerText = plusZ + " " + this.innerText;
+            postPlus;
           } else if (calculationDisplay.innerText.substr(-1, 1) === "-") {
             let minusX = parseFloat(calculationDisplay.innerText, 10);
             let minusY = parseFloat(mainDisplay.innerText, 10);
@@ -164,9 +175,10 @@
             console.log(divideZ);
             mainDisplay.innerText = divideZ;
             calculationDisplay.innerText = divideZ + " " + this.innerText;
-          } else if ((postEquals = true))
-            calculationDisplay.innerText =
-              mainDisplay.innerText + " " + this.innerText;
+          }
+
+          calculationDisplay.innerText =
+            mainDisplay.innerText + " " + this.innerText;
         });
       }
 
@@ -174,17 +186,73 @@
         let value1 = parseFloat(calculationDisplay.innerText, 10);
         let value2 = parseFloat(mainDisplay.innerText);
         let value3 = " " + value2;
+        let calcDisplayText = calculationDisplay.innerText;
+        let value4 = calcDisplayText.slice(
+          calcDisplayText.indexOf("+") + 1,
+          calcDisplayText.lastIndexOf("=")
+        );
+        let value6 = calcDisplayText.slice(
+          calcDisplayText.indexOf("-") + 1,
+          calcDisplayText.lastIndexOf("=")
+        );
+        let value7 = calcDisplayText.slice(
+          calcDisplayText.indexOf("*") + 1,
+          calcDisplayText.lastIndexOf("=")
+        );
+        let value8 = calcDisplayText.slice(
+          calcDisplayText.indexOf("/") + 1,
+          calcDisplayText.lastIndexOf("=")
+        );
+        let opInCalcDisplay = calcDisplayText.slice(
+          calcDisplayText.indexOf(" ") + 1,
+          calcDisplayText.lastIndexOf(" ")
+        );
+        let displayOperator = opInCalcDisplay.charAt(0);
 
-        if (calculationDisplay.innerText.substr(-1, 1) === "+")
-          (mainDisplay.innerText = value1 + value2), (equalsClicked = true);
+        value5 = parseFloat(value4);
+        value9 = parseFloat(value6);
+        value10 = parseFloat(value7);
+        value11 = parseFloat(value8);
+        if (postPlusEquals === true && displayOperator === "+")
+          mainDisplay.innerText = value2 + value5;
+        else if (postPlusEquals === true && displayOperator === "-")
+          mainDisplay.innerText = value2 - value9;
+        else if (postPlusEquals === true && displayOperator === "*")
+          mainDisplay.innerText = value2 * value10;
+        else if (postPlusEquals === true && displayOperator === "/")
+          mainDisplay.innerText = value2 / value11;
+        else if (calculationDisplay.innerText.substr(-1, 1) === "+")
+          (mainDisplay.innerText = value1 + value2), (postPlusEquals = true);
+        else if (postMinusEquals === true && displayOperator === "+")
+          mainDisplay.innerText = value2 + value5;
+        else if (postMinusEquals === true && displayOperator === "-")
+          mainDisplay.innerText = value2 - value9;
+        else if (postMinusEquals === true && displayOperator === "*")
+          mainDisplay.innerText = value2 * value10;
+        else if (postMinusEquals === true && displayOperator === "/")
+          mainDisplay.innerText = value2 / value11;
         else if (calculationDisplay.innerText.substr(-1, 1) === "-")
-          mainDisplay.innerText = value1 - value2;
+          (mainDisplay.innerText = value1 - value2), (postMinusEquals = true);
+        else if (postMultiplyEquals === true && displayOperator === "+")
+          mainDisplay.innerText = value2 + value5;
+        else if (postMultiplyEquals === true && displayOperator === "-")
+          mainDisplay.innerText = value2 - value9;
+        else if (postMultiplyEquals === true && displayOperator === "*")
+          mainDisplay.innerText = value2 * value10;
+        else if (postMultiplyEquals === true && displayOperator === "/")
+          mainDisplay.innerText = value2 / value11;
         else if (calculationDisplay.innerText.substr(-1, 1) === "*")
-          mainDisplay.innerText = value1 * value2;
+          (mainDisplay.innerText = value1 * value2),
+            (postMultiplyEquals = true);
+        else if (postDivideEquals === true && displayOperator === "-")
+          mainDisplay.innerText = value2 - value9;
+        else if (postDivideEquals === true && displayOperator === "*")
+          mainDisplay.innerText = value2 * value10;
+        else if (postDivideEquals === true && displayOperator === "/")
+          mainDisplay.innerText = value2 / value11;
         else if (calculationDisplay.innerText.substr(-1, 1) === "/")
-          mainDisplay.innerText = value1 / value2;
-        else if (calculationDisplay.innerText.substr(-1, 1) === "=")
-          calculationDisplay.innerText = "";
+          (mainDisplay.innerText = value1 / value2), (postDivideEquals = true);
+
         calculationDisplay.innerText += value3 + " =";
       });
 
