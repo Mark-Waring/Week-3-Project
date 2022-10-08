@@ -73,7 +73,7 @@
       <div class="buttons calculate" id="divide">/</div>
       <div class="buttons calculate" id="negative">+/-</div>
       <div class="buttons numbers">0</div>
-      <div class="buttons" id="decimal">.</div>
+      <div class="buttons numbers" id="decimal">.</div>
       <div class="buttons" id="equals">=</div>
     </div>
     <script>
@@ -88,7 +88,7 @@
       let clearButton = document.getElementById("clear");
       let clearEntryButton = document.getElementById("clear-entry");
       let deleteButton = document.getElementById("delete");
-      let decimalButton = document.querySelector("decimal");
+      let decimalButton = document.getElementById("decimal");
       let waitingInput = false;
       let equalsClicked = false;
 
@@ -122,36 +122,6 @@
             }
           });
         }
-      }
-
-      decimalButtonPressed();
-      function decimalButtonPressed() {
-        decimalButton.addEventListener("click", function () {
-          if (
-            mainDisplay.innerText === "0" &&
-            calculationDisplay.innerText === ""
-          )
-            mainDisplay.innerText = this.innerText;
-          else if (
-            mainDisplay.innerText !== "0" &&
-            calculationDisplay.innerText === ""
-          )
-            mainDisplay.innerText += this.innerText;
-          else if (mainDisplay.innerText === "0") {
-            mainDisplay.innerText = this.innerText;
-          } else if (
-            ["+", "-", "*", "/"].includes(
-              calculationDisplay.innerText.substr(-1, 1)
-            )
-          ) {
-            if (waitingInput) {
-              mainDisplay.innerText = this.innerText;
-              waitingInput = false;
-            } else {
-              mainDisplay.innerText += this.innerText;
-            }
-          }
-        });
       }
 
       for (let i = 0; i < operatorButtons.length; i++) {
@@ -210,14 +180,7 @@
         let value1 = parseInt(calculationDisplay.innerText, 10);
         let value2 = parseInt(mainDisplay.innerText);
         let value3 = " " + value2;
-        let calcDisplayText = calculationDisplay.innerText;
-        let value4 = calcDisplayText.slice(
-          calcDisplayText.indexOf("+") + 1,
-          calcDisplayText.lastIndexOf("=")
-        );
-        value5 = parseInt(value4);
-        mainDisplay.innerText = value2 + value5;
-        console.log(value5);
+
         if (calculationDisplay.innerText.substr(-1, 1) === "+")
           (mainDisplay.innerText = value1 + value2), (equalsClicked = true);
         else if (calculationDisplay.innerText.substr(-1, 1) === "-")
@@ -226,6 +189,8 @@
           mainDisplay.innerText = value1 * value2;
         else if (calculationDisplay.innerText.substr(-1, 1) === "/")
           mainDisplay.innerText = value1 / value2;
+        else if (calculationDisplay.innerText.substr(-1, 1) === "=")
+          calculationDisplay.innerText = "";
         calculationDisplay.innerText += value3 + " =";
       });
 
