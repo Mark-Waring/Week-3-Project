@@ -87,8 +87,9 @@
       let equalsButton = document.getElementById("equals");
       let clearButton = document.getElementById("clear");
       let clearEntryButton = document.getElementById("clear-entry");
+      let deleteButton = document.getElementById("delete");
+      let decimalButton = document.querySelector("decimal");
       let waitingInput = false;
-      let postEquals = false;
       let equalsClicked = false;
 
       numberButtonPressed();
@@ -185,7 +186,8 @@
           calcDisplayText.lastIndexOf("=")
         );
         value5 = parseInt(value4);
-        if (equalsClicked === true) mainDisplay.innerText = value2 + value5;
+        mainDisplay.innerText = value2 + value5;
+        console.log(value5);
         if (calculationDisplay.innerText.substr(-1, 1) === "+")
           (mainDisplay.innerText = value1 + value2), (equalsClicked = true);
         else if (calculationDisplay.innerText.substr(-1, 1) === "-")
@@ -197,15 +199,20 @@
         calculationDisplay.innerText += value3 + " =";
       });
 
-      RepeatedEquals;
-
       clearButton.addEventListener("click", function (clearClick) {
         mainDisplay.innerText = "0";
         calculationDisplay.innerText = "";
       });
 
-      clearEntryButton.addEventListener("click", function (clearClick) {
-        mainDisplay.innerText = "0";
+      clearEntryButton.addEventListener("click", function (clearEntryClick) {
+        if (calculationDisplay.innerText.includes("="))
+          (mainDisplay.innerText = "0"), (calculationDisplay.innerText = "");
+        else mainDisplay.innerText = "0";
+      });
+
+      deleteButton.addEventListener("click", function (deleteClick) {
+        if (mainDisplay.innerText.length === 1) mainDisplay.innerText = "0";
+        else mainDisplay.innerText = mainDisplay.innerText.slice(0, -1);
       });
 
       //   function nextNumberPressed() {
