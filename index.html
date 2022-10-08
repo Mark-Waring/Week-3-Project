@@ -140,17 +140,19 @@
             calculationDisplay.innerText === "" &&
             mainDisplay.innerText !== "0"
           )
-            calculationDisplay.innerText =
-              mainDisplay.innerText + " " + this.innerText;
+            (calculationDisplay.innerText =
+              mainDisplay.innerText + " " + this.innerText),
+              console.log("first plus click"),
+              console.log("oeprator clicked true");
           else if (calculationDisplay.innerText.substr(-1, 1) === "+") {
             let plusX = parseFloat(calculationDisplay.innerText, 10);
             let plusY = parseFloat(mainDisplay.innerText, 10);
             let plusZ = plusX + plusY;
             let parseZ = parseFloat(plusZ);
-            console.log(plusZ);
+            console.log("plus again clicked");
             mainDisplay.innerText = parseZ;
             calculationDisplay.innerText = plusZ + " " + this.innerText;
-            postPlus;
+            console.log("oeprator clicked true");
           } else if (calculationDisplay.innerText.substr(-1, 1) === "-") {
             let minusX = parseFloat(calculationDisplay.innerText, 10);
             let minusY = parseFloat(mainDisplay.innerText, 10);
