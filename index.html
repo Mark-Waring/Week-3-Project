@@ -20,11 +20,8 @@
         justify-content: right;
       }
 
-      #calculation-display {
-        display: flex;
-        flex-basis: calc(100% - 10px);
-        margin: 10px;
-        justify-content: right;
+      #calc-display {
+        display: none;
       }
 
       #display-screen {
@@ -48,10 +45,7 @@
   </head>
   <body>
     <div id="calculator-body">
-      <div id="calc-display-1"></div>
-      <div id="calc-display-2"></div>
-      <div id="calc-display-3"></div>
-      <div id="calc-display-4"></div>
+      <div id="calc-display"></div>
       <div class="top-row">
         <div id="display-screen"></div>
       </div>
@@ -82,8 +76,7 @@
       let buttons = document.getElementsByClassName("buttons");
       let numberButtons = document.getElementsByClassName("numbers");
       let operatorButtons = document.getElementsByClassName("calculate");
-      let calculationDisplay1 = document.getElementById("calc-display-1");
-      let calculationDisplay = document.getElementById("calc-display-1");
+      let calculationDisplay = document.getElementById("calc-display");
       let equalsButton = document.getElementById("equals");
       let clearButton = document.getElementById("clear");
       let clearEntryButton = document.getElementById("clear-entry");
