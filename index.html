@@ -71,7 +71,7 @@
       <div class="buttons numbers">2</div>
       <div class="buttons numbers">3</div>
       <div class="buttons calculate" id="divide">/</div>
-      <div class="buttons calculate" id="negative">+/-</div>
+      <div class="buttons calculate" id="negative">+/</div>
       <div class="buttons numbers">0</div>
       <div class="buttons numbers" id="decimal">.</div>
       <div class="buttons" id="equals">=</div>
@@ -139,32 +139,33 @@
             calculationDisplay.innerText =
               mainDisplay.innerText + " " + this.innerText;
           else if (calculationDisplay.innerText.substr(-1, 1) === "+") {
-            let plusX = parseInt(calculationDisplay.innerText, 10);
-            let plusY = parseInt(mainDisplay.innerText, 10);
+            let plusX = parseFloat(calculationDisplay.innerText, 10);
+            let plusY = parseFloat(mainDisplay.innerText, 10);
             let plusZ = plusX + plusY;
+            let parseZ = parseFloat(plusZ);
             console.log("second plus click logged");
             console.log(plusZ);
-            mainDisplay.innerText = plusZ;
+            mainDisplay.innerText = parseZ;
             calculationDisplay.innerText = plusZ + " " + this.innerText;
           } else if (calculationDisplay.innerText.substr(-1, 1) === "-") {
-            let minusX = parseInt(calculationDisplay.innerText, 10);
-            let minusY = parseInt(mainDisplay.innerText, 10);
+            let minusX = parseFloat(calculationDisplay.innerText, 10);
+            let minusY = parseFloat(mainDisplay.innerText, 10);
             let minusZ = minusX - minusY;
             console.log("second minus click logged");
             console.log(minusZ);
             mainDisplay.innerText = minusZ;
             calculationDisplay.innerText = minusZ + " " + this.innerText;
           } else if (calculationDisplay.innerText.substr(-1, 1) === "*") {
-            let multiplyX = parseInt(calculationDisplay.innerText, 10);
-            let multiplyY = parseInt(mainDisplay.innerText, 10);
+            let multiplyX = parseFloat(calculationDisplay.innerText, 10);
+            let multiplyY = parseFloat(mainDisplay.innerText, 10);
             let multiplyZ = multiplyX * multiplyY;
             console.log("second multiply click logged");
             console.log(multiplyZ);
             mainDisplay.innerText = multiplyZ;
             calculationDisplay.innerText = multiplyZ + " " + this.innerText;
           } else if (calculationDisplay.innerText.substr(-1, 1) === "/") {
-            let divideX = parseInt(calculationDisplay.innerText, 10);
-            let divideY = parseInt(mainDisplay.innerText, 10);
+            let divideX = parseFloat(calculationDisplay.innerText, 10);
+            let divideY = parseFloat(mainDisplay.innerText, 10);
             let divideZ = divideX / divideY;
             console.log("second divide click logged");
             console.log(divideZ);
@@ -177,8 +178,8 @@
       }
 
       equalsButton.addEventListener("click", function (equalsClick) {
-        let value1 = parseInt(calculationDisplay.innerText, 10);
-        let value2 = parseInt(mainDisplay.innerText);
+        let value1 = parseFloat(calculationDisplay.innerText, 10);
+        let value2 = parseFloat(mainDisplay.innerText);
         let value3 = " " + value2;
 
         if (calculationDisplay.innerText.substr(-1, 1) === "+")
@@ -253,7 +254,7 @@
       // else if (calculationDisplay.innerText.substr(-1, 1) === "/")
       //   mainDisplay.innerText = value1 / value2;
       // calculationDisplay.innerText += value3 + " =";
-      // let value1 = parseInt(calculationDisplay.innerText, 10);
+      // let value1 = parseFloat(calculationDisplay.innerText, 10);
 
       //   function firstOperatorPressed() {
       //     for (let i = 0; i < calculateButtons.length; i++) {
