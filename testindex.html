@@ -10,7 +10,7 @@
         display: flex;
         flex-wrap: wrap;
         height: 95vh;
-        background-color: darkslategray;
+        background-color: black;
       }
 
       .top-row {
@@ -18,19 +18,19 @@
         flex-basis: calc(100% - 10px);
         margin: 10px;
         justify-content: right;
+        height: 20%;
       }
 
       #calc-display {
-        /* display: none; */
+        color: white;
       }
 
       #display-screen {
         display: flex;
         flex-basis: calc(25% - 15px);
-        background-color: grey;
         align-items: center;
         justify-content: center;
-        background-color: grey;
+        align-items: flex-end;
       }
 
       .buttons {
@@ -38,8 +38,29 @@
         flex-basis: calc(25% - 20px);
         justify-content: center;
         align-items: center;
-        background-color: grey;
+        background-color: lightgrey;
         margin: 10px;
+        border-radius: 50%;
+        font-size: large;
+        font-family: Arial, Helvetica, sans-serif;
+        transition: background-color 0.5s;
+      }
+
+      .numbers {
+        background-color: dimgrey;
+        color: white;
+        transition: background-color 0.5s;
+      }
+
+      .calculate {
+        background-color: gold;
+        color: white;
+        transition: background-color 0.5s;
+      }
+
+      #zero {
+        flex-basis: calc(50% - 20px);
+        border-radius: 50%;
       }
     </style>
   </head>
@@ -49,25 +70,24 @@
       <div class="top-row">
         <div id="display-screen"></div>
       </div>
-      <div class="buttons" id="clear-entry">CE</div>
       <div class="buttons" id="clear">C</div>
-      <div class="buttons" id="delete">DEL</div>
-      <div class="buttons calculate" id="plus">+</div>
+      <div class="buttons" id="clear-entry">CE</div>
+      <div class="buttons" id="negative">+ /</div>
+      <div class="buttons calculate" id="divide">/</div>
       <div class="buttons numbers">7</div>
       <div class="buttons numbers">8</div>
       <div class="buttons numbers">9</div>
-      <div class="buttons calculate" id="minus">-</div>
+      <div class="buttons calculate" id="multiply">*</div>
       <div class="buttons numbers">4</div>
       <div class="buttons numbers">5</div>
       <div class="buttons numbers">6</div>
-      <div class="buttons calculate" id="multiply">*</div>
+      <div class="buttons calculate" id="minus">-</div>
       <div class="buttons numbers">1</div>
       <div class="buttons numbers">2</div>
       <div class="buttons numbers">3</div>
-      <div class="buttons calculate" id="divide">/</div>
-      <div class="buttons calculate" id="negative">+/</div>
-      <div class="buttons numbers">0</div>
-      <div class="buttons numbers" id="decimal">.</div>
+      <div class="buttons calculate" id="plus">+</div>
+      <div class="buttons numbers" id="zero">0</div>
+      <div class="buttons" id="decimal">.</div>
       <div class="buttons" id="equals">=</div>
     </div>
     <script>
@@ -80,7 +100,6 @@
       let equalsButton = document.getElementById("equals");
       let clearButton = document.getElementById("clear");
       let clearEntryButton = document.getElementById("clear-entry");
-      let deleteButton = document.getElementById("delete");
       let decimalButton = document.getElementById("decimal");
       let waitingInput = false;
       let postPlusEquals = false;
@@ -93,6 +112,15 @@
       let postDividePlus = false;
       let operatorClicked = false;
       let restrictOperator = 0;
+
+      mainDisplay.style.fontFamily = "Arial, Helvetica, sans-serif";
+      mainDisplay.style.fontSize = "60px";
+      mainDisplay.style.color = "white";
+
+      calculationDisplay.style.fontFamily = "Arial, Helvetica, sans-serif";
+      calculationDisplay.style.fontSize = "20px";
+      calculationDisplay.style.color = "white";
+      calculationDisplay.style.display = "block";
 
       numberButtonPressed();
       function numberButtonPressed() {
@@ -129,6 +157,41 @@
           });
         }
       }
+      let restrictDecimal = 0;
+      decimalButtonPressed();
+      function decimalButtonPressed() {
+        decimal.addEventListener("click", function () {
+          secondOprClicked = false;
+          restrictOperator = 0;
+          restrictDecimal++;
+          console.log("second operator clicked false");
+          if (restrictDecimal > 1) return;
+          if (
+            mainDisplay.innerText === "0" &&
+            calculationDisplay.innerText === ""
+          )
+            mainDisplay.innerText = this.innerText;
+          else if (
+            mainDisplay.innerText !== "0" &&
+            calculationDisplay.innerText === ""
+          )
+            mainDisplay.innerText += this.innerText;
+          else if (mainDisplay.innerText === "0") {
+            mainDisplay.innerText = this.innerText;
+          } else if (
+            ["+", "-", "*", "/"].includes(
+              calculationDisplay.innerText.substr(-1, 1)
+            )
+          ) {
+            if (waitingInput) {
+              mainDisplay.innerText = this.innerText;
+              waitingInput = false;
+            } else {
+              mainDisplay.innerText += this.innerText;
+            }
+          }
+        });
+      }
 
       let firstOprClicked = false;
       let secondOprClicked = false;
@@ -142,6 +205,7 @@
           waitingInput = true;
           numberClicked = false;
           secondOprClicked = false;
+          restrictDecimal = 0;
           restrictOperator++;
           if (
             (calculationDisplay.innerText === "" &&
@@ -274,11 +338,6 @@
         if (calculationDisplay.innerText.includes("="))
           (mainDisplay.innerText = "0"), (calculationDisplay.innerText = "");
         else mainDisplay.innerText = "0";
-      });
-
-      deleteButton.addEventListener("click", function (deleteClick) {
-        if (mainDisplay.innerText.length === 1) mainDisplay.innerText = "0";
-        else mainDisplay.innerText = mainDisplay.innerText.slice(0, -1);
       });
 
       //   function nextNumberPressed() {
