@@ -10,7 +10,7 @@
         display: flex;
         flex-wrap: wrap;
         height: 95vh;
-        background-color: black;
+        background-color: darkslategray;
       }
 
       .top-row {
@@ -18,19 +18,19 @@
         flex-basis: calc(100% - 10px);
         margin: 10px;
         justify-content: right;
-        height: 20%;
       }
 
       #calc-display {
-        color: white;
+        /* display: none; */
       }
 
       #display-screen {
         display: flex;
         flex-basis: calc(25% - 15px);
+        background-color: grey;
         align-items: center;
         justify-content: center;
-        align-items: flex-end;
+        background-color: grey;
       }
 
       .buttons {
@@ -38,29 +38,8 @@
         flex-basis: calc(25% - 20px);
         justify-content: center;
         align-items: center;
-        background-color: lightgrey;
+        background-color: grey;
         margin: 10px;
-        border-radius: 50%;
-        font-size: large;
-        font-family: Arial, Helvetica, sans-serif;
-        transition: background-color 0.5s;
-      }
-
-      .numbers {
-        background-color: dimgrey;
-        color: white;
-        transition: background-color 0.5s;
-      }
-
-      .calculate {
-        background-color: gold;
-        color: white;
-        transition: background-color 0.5s;
-      }
-
-      #zero {
-        flex-basis: calc(50% - 20px);
-        border-radius: 50%;
       }
     </style>
   </head>
@@ -70,23 +49,24 @@
       <div class="top-row">
         <div id="display-screen"></div>
       </div>
-      <div class="buttons" id="clear">C</div>
       <div class="buttons" id="clear-entry">CE</div>
-      <div class="buttons" id="negative">+ /</div>
-      <div class="buttons calculate" id="divide">/</div>
+      <div class="buttons" id="clear">C</div>
+      <div class="buttons" id="delete">DEL</div>
+      <div class="buttons calculate" id="plus">+</div>
       <div class="buttons numbers">7</div>
       <div class="buttons numbers">8</div>
       <div class="buttons numbers">9</div>
-      <div class="buttons calculate" id="multiply">*</div>
+      <div class="buttons calculate" id="minus">-</div>
       <div class="buttons numbers">4</div>
       <div class="buttons numbers">5</div>
       <div class="buttons numbers">6</div>
-      <div class="buttons calculate" id="minus">-</div>
+      <div class="buttons calculate" id="multiply">*</div>
       <div class="buttons numbers">1</div>
       <div class="buttons numbers">2</div>
       <div class="buttons numbers">3</div>
-      <div class="buttons calculate" id="plus">+</div>
-      <div class="buttons numbers" id="zero">0</div>
+      <div class="buttons calculate" id="divide">/</div>
+      <div class="buttons calculate" id="negative">+/</div>
+      <div class="buttons numbers">0</div>
       <div class="buttons numbers" id="decimal">.</div>
       <div class="buttons" id="equals">=</div>
     </div>
@@ -100,8 +80,8 @@
       let equalsButton = document.getElementById("equals");
       let clearButton = document.getElementById("clear");
       let clearEntryButton = document.getElementById("clear-entry");
+      let deleteButton = document.getElementById("delete");
       let decimalButton = document.getElementById("decimal");
-      let negativeButton = document.getElementById("negative");
       let waitingInput = false;
       let postPlusEquals = false;
       let postMinusEquals = false;
@@ -112,30 +92,16 @@
       let postMultiplyPlus = false;
       let postDividePlus = false;
       let operatorClicked = false;
-      let mouseDownFired = false;
-      const mainDisplayText = mainDisplay.innerText * 1;
-      removeDecimal = false;
-
-      mainDisplay.style.fontFamily = "Arial, Helvetica, sans-serif";
-      mainDisplay.style.fontSize = "60px";
-      mainDisplay.style.color = "white";
-
-      calculationDisplay.style.fontFamily = "Arial, Helvetica, sans-serif";
-      calculationDisplay.style.fontSize = "20px";
-      calculationDisplay.style.color = "white";
-      calculationDisplay.style.display = "block";
-
-      negativeButton.addEventListener("click", function () {
-        let mainDisplayNumber = parseFloat(mainDisplay.innerText, 10);
-        mainDisplay.innerText = mainDisplayNumber * -1;
-      });
+      let waitingPostOprInput = false;
+      let firstPlusClick = false;
 
       numberButtonPressed();
       function numberButtonPressed() {
         for (let i = 0; i < numberButtons.length; i++) {
-          numberButtons[i].addEventListener("mousedown", function () {
-            this.style.backgroundColor = "darkgrey";
-            console.log("operator unclicked");
+          numberButtons[i].addEventListener("click", function () {
+            waitingPostOprInput = false;
+            console.log("waiting postop input false");
+
             if (
               mainDisplay.innerText === "0" &&
               calculationDisplay.innerText === ""
@@ -164,41 +130,60 @@
         }
       }
 
+      let waitingPostPlusInput = false;
+
       for (let i = 0; i < operatorButtons.length; i++) {
-        operatorButtons[i].addEventListener("mousedown", function () {
-          this.style.backgroundColor = "#F1E5AC";
-          if ((waitingInput = true))
-            mainDisplay.innerText =
-              calculationDisplay.innerText + " " + this.innerText;
-          return;
+        operatorButtons[i].addEventListener("click", function () {
           waitingInput = true;
-          console.log("post op true");
-          if (
-            calculationDisplay.innerText === "" &&
-            mainDisplay.innerText === "0"
-          )
-            calculationDisplay.innerText = "0 " + this.innerText;
-          else if (
-            calculationDisplay.innerText === "" &&
-            mainDisplay.innerText !== "0"
-          )
+          console.log("post op hit"),
             (calculationDisplay.innerText =
               mainDisplay.innerText + " " + this.innerText),
-              (waitingPostOperator = true);
-          else if (calculationDisplay.innerText.substr(-1, 1) === "+") {
+            (waitingPostOprInput = true);
+
+          if ((calculationDisplay.innerText = ""))
+            (calculationDisplay.innerText =
+              mainDisplay.innerText + " " + this.innerText),
+              console.log("first plus click"),
+              (waitingPostPlusInput = true);
+
+          waitingPostOprInput = false;
+          return;
+          waitingPostOprInput = false;
+          if (calculationDisplay.innerText.substr(-1, 1) === "+") {
             let plusX = parseFloat(calculationDisplay.innerText, 10);
             let plusY = parseFloat(mainDisplay.innerText, 10);
             let plusZ = plusX + plusY;
             let parseZ = parseFloat(plusZ);
-            console.log(plusZ);
-            mainDisplay.innerText = parseZ;
-            calculationDisplay.innerText = plusZ + " " + this.innerText;
-          } else if (calculationDisplay.innerText.substr(-1, 1) === "-") {
+            console.log("plus again clicked"),
+              (mainDisplay.innerText = parseZ),
+              (calculationDisplay.innerText = plusZ + " " + this.innerText),
+              (waitingPostOprInput = true);
+          }
+          waitingPostOprInput = false;
+          return;
+
+          // if else {
+          //   waitingPostOprInput = false;
+          //   console.log("waiting post op false");
+          //   if (
+          //     calculationDisplay.innerText === "" &&
+          //     mainDisplay.innerText !== "0"
+          //   ) {
+          //
+          //   } else if (
+          //     calculationDisplay.innerText === "" &&
+          //     mainDisplay.innerText !== "0"
+          //   )
+          //     (calculationDisplay.innerText =
+          //       mainDisplay.innerText + " " + this.innerText);
+          //   console.log("waiting postop input true");
+          // }
+          if (calculationDisplay.innerText.substr(-1, 1) === "-") {
             let minusX = parseFloat(calculationDisplay.innerText, 10);
             let minusY = parseFloat(mainDisplay.innerText, 10);
             let minusZ = minusX - minusY;
             console.log("second minus click logged");
-            console.log(mainDisplay.innerText);
+            console.log(minusZ);
             mainDisplay.innerText = minusZ;
             calculationDisplay.innerText = minusZ + " " + this.innerText;
           } else if (calculationDisplay.innerText.substr(-1, 1) === "*") {
@@ -221,8 +206,6 @@
 
           calculationDisplay.innerText =
             mainDisplay.innerText + " " + this.innerText;
-
-          waitingPostOperator = true;
         });
       }
 
@@ -311,6 +294,11 @@
         if (calculationDisplay.innerText.includes("="))
           (mainDisplay.innerText = "0"), (calculationDisplay.innerText = "");
         else mainDisplay.innerText = "0";
+      });
+
+      deleteButton.addEventListener("click", function (deleteClick) {
+        if (mainDisplay.innerText.length === 1) mainDisplay.innerText = "0";
+        else mainDisplay.innerText = mainDisplay.innerText.slice(0, -1);
       });
 
       //   function nextNumberPressed() {
