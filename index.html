@@ -22,7 +22,7 @@
       }
 
       #calc-display {
-        color: white;
+        display: none;
       }
 
       #display-screen {
@@ -62,6 +62,12 @@
         flex-basis: calc(50% - 20px);
         border-radius: 50%;
       }
+      @media screen and (min-width: 550px) {
+        .buttons,
+        #zero {
+          border-radius: 0%;
+        }
+      }
     </style>
   </head>
   <body>
@@ -87,7 +93,7 @@
       <div class="buttons numbers">3</div>
       <div class="buttons calculate" id="plus">+</div>
       <div class="buttons numbers" id="zero">0</div>
-      <div class="buttons numbers" id="decimal">.</div>
+      <div class="buttons" id="decimal">.</div>
       <div class="buttons" id="equals">=</div>
     </div>
     <script>
@@ -112,9 +118,8 @@
       let postMultiplyPlus = false;
       let postDividePlus = false;
       let operatorClicked = false;
-      let mouseDownFired = false;
-      const mainDisplayText = mainDisplay.innerText * 1;
-      removeDecimal = false;
+      let restrictOperator = 0;
+      let restrictNumber = 0;
 
       mainDisplay.style.fontFamily = "Arial, Helvetica, sans-serif";
       mainDisplay.style.fontSize = "60px";
@@ -130,12 +135,22 @@
         mainDisplay.innerText = mainDisplayNumber * -1;
       });
 
+      for (let i = 0; i < numberButtons.length; i++)
+        numberButtons[i].addEventListener("mousedown", function () {
+          this.style.backgroundColor = "grey";
+        });
+
       numberButtonPressed();
       function numberButtonPressed() {
         for (let i = 0; i < numberButtons.length; i++) {
-          numberButtons[i].addEventListener("mousedown", function () {
-            this.style.backgroundColor = "darkgrey";
-            console.log("operator unclicked");
+          numberButtons[i].addEventListener("mouseup", function () {
+            if (restrictNumber > 8) return;
+            // this.style.backgroundColor = "dimgrey";
+            secondOprClicked = false;
+            restrictOperator = 0;
+            restrictNumber++;
+            console.log("second operator clicked false");
+
             if (
               mainDisplay.innerText === "0" &&
               calculationDisplay.innerText === ""
@@ -163,42 +178,75 @@
           });
         }
       }
+      let restrictDecimal = 0;
+      decimalButtonPressed();
+      function decimalButtonPressed() {
+        decimal.addEventListener("click", function () {
+          secondOprClicked = false;
+          restrictOperator = 0;
+          restrictDecimal++;
+          console.log("second operator clicked false");
+          if (restrictDecimal > 1) return;
+          if (
+            mainDisplay.innerText === "0" &&
+            calculationDisplay.innerText === ""
+          )
+            mainDisplay.innerText = this.innerText;
+          else if (
+            mainDisplay.innerText !== "0" &&
+            calculationDisplay.innerText === ""
+          )
+            mainDisplay.innerText += this.innerText;
+          else if (mainDisplay.innerText === "0") {
+            mainDisplay.innerText = this.innerText;
+          } else if (
+            ["+", "-", "*", "/"].includes(
+              calculationDisplay.innerText.substr(-1, 1)
+            )
+          ) {
+            if (waitingInput) {
+              mainDisplay.innerText = this.innerText;
+              waitingInput = false;
+            } else {
+              mainDisplay.innerText += this.innerText;
+            }
+          }
+        });
+      }
+
+      // restrictOperator = true if secondOPerator is true and
 
       for (let i = 0; i < operatorButtons.length; i++) {
-        operatorButtons[i].addEventListener("mousedown", function () {
-          this.style.backgroundColor = "#F1E5AC";
-          if ((waitingInput = true))
-            mainDisplay.innerText =
-              calculationDisplay.innerText + " " + this.innerText;
-          return;
+        operatorButtons[i].addEventListener("click", function () {
           waitingInput = true;
-          console.log("post op true");
+          numberClicked = false;
+          secondOprClicked = false;
+          restrictDecimal = 0;
+          restrictNumber = 0;
+          restrictOperator++;
           if (
-            calculationDisplay.innerText === "" &&
-            mainDisplay.innerText === "0"
+            (calculationDisplay.innerText === "" &&
+              mainDisplay.innerText !== "0") ||
+            restrictOperator > 1
           )
-            calculationDisplay.innerText = "0 " + this.innerText;
-          else if (
-            calculationDisplay.innerText === "" &&
-            mainDisplay.innerText !== "0"
-          )
-            (calculationDisplay.innerText =
-              mainDisplay.innerText + " " + this.innerText),
-              (waitingPostOperator = true);
+            calculationDisplay.innerText =
+              mainDisplay.innerText + " " + this.innerText;
           else if (calculationDisplay.innerText.substr(-1, 1) === "+") {
             let plusX = parseFloat(calculationDisplay.innerText, 10);
             let plusY = parseFloat(mainDisplay.innerText, 10);
             let plusZ = plusX + plusY;
             let parseZ = parseFloat(plusZ);
-            console.log(plusZ);
-            mainDisplay.innerText = parseZ;
-            calculationDisplay.innerText = plusZ + " " + this.innerText;
+            (mainDisplay.innerText = parseZ),
+              (calculationDisplay.innerText = plusZ + " " + this.innerText),
+              (secondOprClicked = true);
+            console.log(restrictOperator);
+            console.log("2nd oeprator clicked true");
           } else if (calculationDisplay.innerText.substr(-1, 1) === "-") {
             let minusX = parseFloat(calculationDisplay.innerText, 10);
             let minusY = parseFloat(mainDisplay.innerText, 10);
             let minusZ = minusX - minusY;
             console.log("second minus click logged");
-            console.log(mainDisplay.innerText);
+            console.log(minusZ);
             mainDisplay.innerText = minusZ;
             calculationDisplay.innerText = minusZ + " " + this.innerText;
           } else if (calculationDisplay.innerText.substr(-1, 1) === "*") {
@@ -221,12 +269,11 @@
 
           calculationDisplay.innerText =
             mainDisplay.innerText + " " + this.innerText;
-
-          waitingPostOperator = true;
         });
       }
 
       equalsButton.addEventListener("click", function (equalsClick) {
+        restrictNumber = 0;
         let value1 = parseFloat(calculationDisplay.innerText, 10);
         let value2 = parseFloat(mainDisplay.innerText);
         let value3 = " " + value2;
@@ -288,8 +335,6 @@
         else if (calculationDisplay.innerText.substr(-1, 1) === "*")
           (mainDisplay.innerText = value1 * value2),
             (postMultiplyEquals = true);
-        else if (postDivideEquals === true && displayOperator === "+")
-          mainDisplay.innerText = value2 - value5;
         else if (postDivideEquals === true && displayOperator === "-")
           mainDisplay.innerText = value2 - value9;
         else if (postDivideEquals === true && displayOperator === "*")
@@ -305,12 +350,14 @@
       clearButton.addEventListener("click", function (clearClick) {
         mainDisplay.innerText = "0";
         calculationDisplay.innerText = "";
+        restrictNumber = 0;
       });
 
       clearEntryButton.addEventListener("click", function (clearEntryClick) {
         if (calculationDisplay.innerText.includes("="))
           (mainDisplay.innerText = "0"), (calculationDisplay.innerText = "");
         else mainDisplay.innerText = "0";
+        restrictNumber = 0;
       });
 
       //   function nextNumberPressed() {
