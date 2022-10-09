@@ -92,15 +92,15 @@
       let postMultiplyPlus = false;
       let postDividePlus = false;
       let operatorClicked = false;
-      let waitingPostOprInput = false;
-      let firstPlusClick = false;
+      let restrictOperator = 0;
 
       numberButtonPressed();
       function numberButtonPressed() {
         for (let i = 0; i < numberButtons.length; i++) {
           numberButtons[i].addEventListener("click", function () {
-            waitingPostOprInput = false;
-            console.log("waiting postop input false");
+            secondOprClicked = false;
+            restrictOperator = 0;
+            console.log("second operator clicked false");
 
             if (
               mainDisplay.innerText === "0" &&
@@ -130,55 +130,37 @@
         }
       }
 
-      let waitingPostPlusInput = false;
+      let firstOprClicked = false;
+      let secondOprClicked = false;
+
+      let numberClicked = false;
+
+      // restrictOperator = true if secondOPerator is true and
 
       for (let i = 0; i < operatorButtons.length; i++) {
         operatorButtons[i].addEventListener("click", function () {
           waitingInput = true;
-          console.log("post op hit"),
-            (calculationDisplay.innerText =
-              mainDisplay.innerText + " " + this.innerText),
-            (waitingPostOprInput = true);
-
-          if ((calculationDisplay.innerText = ""))
-            (calculationDisplay.innerText =
-              mainDisplay.innerText + " " + this.innerText),
-              console.log("first plus click"),
-              (waitingPostPlusInput = true);
-
-          waitingPostOprInput = false;
-          return;
-          waitingPostOprInput = false;
-          if (calculationDisplay.innerText.substr(-1, 1) === "+") {
+          numberClicked = false;
+          secondOprClicked = false;
+          restrictOperator++;
+          if (
+            (calculationDisplay.innerText === "" &&
+              mainDisplay.innerText !== "0") ||
+            restrictOperator > 1
+          )
+            calculationDisplay.innerText =
+              mainDisplay.innerText + " " + this.innerText;
+          else if (calculationDisplay.innerText.substr(-1, 1) === "+") {
             let plusX = parseFloat(calculationDisplay.innerText, 10);
             let plusY = parseFloat(mainDisplay.innerText, 10);
             let plusZ = plusX + plusY;
             let parseZ = parseFloat(plusZ);
-            console.log("plus again clicked"),
-              (mainDisplay.innerText = parseZ),
+            (mainDisplay.innerText = parseZ),
               (calculationDisplay.innerText = plusZ + " " + this.innerText),
-              (waitingPostOprInput = true);
-          }
-          waitingPostOprInput = false;
-          return;
-
-          // if else {
-          //   waitingPostOprInput = false;
-          //   console.log("waiting post op false");
-          //   if (
-          //     calculationDisplay.innerText === "" &&
-          //     mainDisplay.innerText !== "0"
-          //   ) {
-          //
-          //   } else if (
-          //     calculationDisplay.innerText === "" &&
-          //     mainDisplay.innerText !== "0"
-          //   )
-          //     (calculationDisplay.innerText =
-          //       mainDisplay.innerText + " " + this.innerText);
-          //   console.log("waiting postop input true");
-          // }
-          if (calculationDisplay.innerText.substr(-1, 1) === "-") {
+              (secondOprClicked = true);
+            console.log(restrictOperator);
+            console.log("2nd oeprator clicked true");
+          } else if (calculationDisplay.innerText.substr(-1, 1) === "-") {
             let minusX = parseFloat(calculationDisplay.innerText, 10);
             let minusY = parseFloat(mainDisplay.innerText, 10);
             let minusZ = minusX - minusY;
@@ -271,8 +253,6 @@
         else if (calculationDisplay.innerText.substr(-1, 1) === "*")
           (mainDisplay.innerText = value1 * value2),
             (postMultiplyEquals = true);
-        else if (postDivideEquals === true && displayOperator === "+")
-          mainDisplay.innerText = value2 - value5;
         else if (postDivideEquals === true && displayOperator === "-")
           mainDisplay.innerText = value2 - value9;
         else if (postDivideEquals === true && displayOperator === "*")
