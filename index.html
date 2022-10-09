@@ -18,9 +18,11 @@
         flex-basis: calc(100% - 10px);
         margin: 10px;
         justify-content: right;
+        height: 20%;
       }
 
       #calc-display {
+        display: none;
       }
 
       #display-screen {
@@ -28,7 +30,7 @@
         flex-basis: calc(25% - 15px);
         align-items: center;
         justify-content: center;
-        background-color: lightgrey;
+        align-items: flex-end;
       }
 
       .buttons {
@@ -39,16 +41,21 @@
         background-color: lightgrey;
         margin: 10px;
         border-radius: 50%;
+        font-size: large;
+        font-family: Arial, Helvetica, sans-serif;
+        transition: background-color 0.5s;
       }
 
       .numbers {
         background-color: dimgrey;
         color: white;
+        transition: background-color 0.5s;
       }
 
       .calculate {
         background-color: gold;
         color: white;
+        transition: background-color 0.5s;
       }
 
       #zero {
@@ -65,7 +72,7 @@
       </div>
       <div class="buttons" id="clear">C</div>
       <div class="buttons" id="clear-entry">CE</div>
-      <div class="buttons" id="negative">+/</div>
+      <div class="buttons" id="negative">+ /</div>
       <div class="buttons calculate" id="divide">/</div>
       <div class="buttons numbers">7</div>
       <div class="buttons numbers">8</div>
@@ -107,6 +114,10 @@
       let operatorClicked = false;
       let mouseDownFired = false;
 
+      mainDisplay.style.fontFamily = "Arial, Helvetica, sans-serif";
+      mainDisplay.style.fontSize = "60px";
+      mainDisplay.style.color = "white";
+
       negativeButton.addEventListener("click", function () {
         let mainDisplayNumber = parseFloat(mainDisplay.innerText, 10);
         mainDisplay.innerText = mainDisplayNumber * -1;
@@ -142,6 +153,8 @@
                 mainDisplay.innerText += this.innerText;
               }
             }
+            console.log(mainDisplay.innerText);
+            console.log(mainDisplay.innerText * 1);
           });
         }
       }
@@ -175,7 +188,7 @@
             let minusY = parseFloat(mainDisplay.innerText, 10);
             let minusZ = minusX - minusY;
             console.log("second minus click logged");
-            console.log(minusZ);
+            console.log(mainDisplay.innerText);
             mainDisplay.innerText = minusZ;
             calculationDisplay.innerText = minusZ + " " + this.innerText;
           } else if (calculationDisplay.innerText.substr(-1, 1) === "*") {
