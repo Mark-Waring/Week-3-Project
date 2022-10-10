@@ -115,8 +115,9 @@
       <div class="buttons" id="equals">=</div>
     </div>
     <script>
+      // my brief attempts to link to js and style sheets did not work
       mainDisplay = document.getElementById("display-screen");
-      // why does setting mainDisplay.innerText as a const or variable break everything?
+      // why does setting mainDisplay.innerText as a variable break everything?
       const buttons = document.getElementsByClassName("buttons");
       const numberButtons = document.getElementsByClassName("numbers");
       const operatorButtons = document.getElementsByClassName("calculate");
@@ -139,7 +140,7 @@
       mainDisplay.style.fontFamily = "Arial, Helvetica, sans-serif";
       mainDisplay.style.fontSize = "60px";
       mainDisplay.style.color = "white";
-      /// is it possible with our current tools to reduce text size based on string length?
+      /// is it possible with our current tools to reduce text font size based on string length?
 
       calculationDisplay.style.fontFamily = "Arial, Helvetica, sans-serif";
       calculationDisplay.style.fontSize = "20px";
