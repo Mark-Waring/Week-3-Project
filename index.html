@@ -366,8 +366,206 @@
         restrictNumber = 0;
       });
 
-      document.body.addEventListener("keypress", (e) => {
-        console.log(e.key);
+      document.body.addEventListener("keydown", (e) => {
+        if (
+          e.key === "1" ||
+          e.key === "2" ||
+          e.key === "3" ||
+          e.key === "4" ||
+          e.key === "5" ||
+          e.key === "6" ||
+          e.key === "7" ||
+          e.key === "8" ||
+          e.key === "9" ||
+          e.key === "0"
+        ) {
+          if (restrictNumber > 8) return;
+          secondOprClicked = false;
+          restrictOperator = 0;
+          restrictNumber++;
+          console.log("second operator clicked false");
+
+          if (
+            mainDisplay.innerText === "0" &&
+            calculationDisplay.innerText === ""
+          )
+            mainDisplay.innerText = e.key;
+          else if (
+            mainDisplay.innerText !== "0" &&
+            calculationDisplay.innerText === ""
+          )
+            mainDisplay.innerText += e.key;
+          else if (mainDisplay.innerText === "0") {
+            mainDisplay.innerText = e.key;
+          } else if (
+            ["+", "-", "*", "/"].includes(
+              calculationDisplay.innerText.substr(-1, 1)
+            )
+          ) {
+            if (waitingInput) {
+              mainDisplay.innerText = e.key;
+              waitingInput = false;
+            } else {
+              mainDisplay.innerText += e.key;
+            }
+          }
+        }
+        if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/") {
+          waitingInput = true;
+          numberClicked = false;
+          secondOprClicked = false;
+          restrictDecimal = 0;
+          restrictNumber = 0;
+          restrictOperator++;
+          if (
+            (calculationDisplay.innerText === "" &&
+              mainDisplay.innerText !== "0") ||
+            restrictOperator > 1
+          )
+            calculationDisplay.innerText = mainDisplay.innerText + " " + e.key;
+          else if (calculationDisplay.innerText.substr(-1, 1) === "+") {
+            let plusX = parseFloat(calculationDisplay.innerText, 10);
+            let plusY = parseFloat(mainDisplay.innerText, 10);
+            let plusZ = plusX + plusY;
+            let parseZ = parseFloat(plusZ);
+            (mainDisplay.innerText = parseZ),
+              (calculationDisplay.innerText = plusZ + " " + e.key),
+              (secondOprClicked = true);
+            console.log(restrictOperator);
+            console.log("2nd oeprator clicked true");
+          } else if (calculationDisplay.innerText.substr(-1, 1) === "-") {
+            let minusX = parseFloat(calculationDisplay.innerText, 10);
+            let minusY = parseFloat(mainDisplay.innerText, 10);
+            let minusZ = minusX - minusY;
+            console.log("second minus click logged");
+            console.log(minusZ);
+            mainDisplay.innerText = minusZ;
+            calculationDisplay.innerText = minusZ + " " + e.key;
+          } else if (calculationDisplay.innerText.substr(-1, 1) === "*") {
+            let multiplyX = parseFloat(calculationDisplay.innerText, 10);
+            let multiplyY = parseFloat(mainDisplay.innerText, 10);
+            let multiplyZ = multiplyX * multiplyY;
+            console.log("second multiply click logged");
+            console.log(multiplyZ);
+            mainDisplay.innerText = multiplyZ;
+            calculationDisplay.innerText = multiplyZ + " " + e.key;
+          } else if (calculationDisplay.innerText.substr(-1, 1) === "/") {
+            let divideX = parseFloat(calculationDisplay.innerText, 10);
+            let divideY = parseFloat(mainDisplay.innerText, 10);
+            let divideZ = divideX / divideY;
+            console.log("second divide click logged");
+            console.log(divideZ);
+            mainDisplay.innerText = divideZ;
+            calculationDisplay.innerText = divideZ + " " + e.key;
+          }
+
+          calculationDisplay.innerText = mainDisplay.innerText + " " + e.key;
+        } else if ((e.key = "Enter")) {
+          restrictNumber = 0;
+          let value1 = parseFloat(calculationDisplay.innerText, 10);
+          let value2 = parseFloat(mainDisplay.innerText);
+          let value3 = " " + value2;
+          let calcDisplayText = calculationDisplay.innerText;
+          let value4 = calcDisplayText.slice(
+            calcDisplayText.indexOf("+") + 1,
+            calcDisplayText.lastIndexOf("=")
+          );
+          let value6 = calcDisplayText.slice(
+            calcDisplayText.indexOf("-") + 1,
+            calcDisplayText.lastIndexOf("=")
+          );
+          let value7 = calcDisplayText.slice(
+            calcDisplayText.indexOf("*") + 1,
+            calcDisplayText.lastIndexOf("=")
+          );
+          let value8 = calcDisplayText.slice(
+            calcDisplayText.indexOf("/") + 1,
+            calcDisplayText.lastIndexOf("=")
+          );
+          let opInCalcDisplay = calcDisplayText.slice(
+            calcDisplayText.indexOf(" ") + 1,
+            calcDisplayText.lastIndexOf(" ")
+          );
+          let displayOperator = opInCalcDisplay.charAt(0);
+
+          value5 = parseFloat(value4);
+          value9 = parseFloat(value6);
+          value10 = parseFloat(value7);
+          value11 = parseFloat(value8);
+          if (postPlusEquals === true && displayOperator === "+")
+            mainDisplay.innerText = value2 + value5;
+          else if (postPlusEquals === true && displayOperator === "-")
+            mainDisplay.innerText = value2 - value9;
+          else if (postPlusEquals === true && displayOperator === "*")
+            mainDisplay.innerText = value2 * value10;
+          else if (postPlusEquals === true && displayOperator === "/")
+            mainDisplay.innerText = value2 / value11;
+          else if (calculationDisplay.innerText.substr(-1, 1) === "+")
+            (mainDisplay.innerText = value1 + value2), (postPlusEquals = true);
+          else if (postMinusEquals === true && displayOperator === "+")
+            mainDisplay.innerText = value2 + value5;
+          else if (postMinusEquals === true && displayOperator === "-")
+            mainDisplay.innerText = value2 - value9;
+          else if (postMinusEquals === true && displayOperator === "*")
+            mainDisplay.innerText = value2 * value10;
+          else if (postMinusEquals === true && displayOperator === "/")
+            mainDisplay.innerText = value2 / value11;
+          else if (calculationDisplay.innerText.substr(-1, 1) === "-")
+            (mainDisplay.innerText = value1 - value2), (postMinusEquals = true);
+          else if (postMultiplyEquals === true && displayOperator === "+")
+            mainDisplay.innerText = value2 + value5;
+          else if (postMultiplyEquals === true && displayOperator === "-")
+            mainDisplay.innerText = value2 - value9;
+          else if (postMultiplyEquals === true && displayOperator === "*")
+            mainDisplay.innerText = value2 * value10;
+          else if (postMultiplyEquals === true && displayOperator === "/")
+            mainDisplay.innerText = value2 / value11;
+          else if (calculationDisplay.innerText.substr(-1, 1) === "*")
+            (mainDisplay.innerText = value1 * value2),
+              (postMultiplyEquals = true);
+          else if (postDivideEquals === true && displayOperator === "-")
+            mainDisplay.innerText = value2 - value9;
+          else if (postDivideEquals === true && displayOperator === "*")
+            mainDisplay.innerText = value2 * value10;
+          else if (postDivideEquals === true && displayOperator === "/")
+            mainDisplay.innerText = value2 / value11;
+          else if (calculationDisplay.innerText.substr(-1, 1) === "/")
+            (mainDisplay.innerText = value1 / value2),
+              (postDivideEquals = true);
+
+          calculationDisplay.innerText += value3 + " =";
+        } else if ((e.key = ".")) {
+          console.log("picking up enter as .");
+          secondOprClicked = false;
+          restrictOperator = 0;
+          restrictDecimal++;
+          console.log("second operator clicked false");
+          if (restrictDecimal > 1) return;
+          if (
+            mainDisplay.innerText === "0" &&
+            calculationDisplay.innerText === ""
+          )
+            mainDisplay.innerText = e.key;
+          else if (
+            mainDisplay.innerText !== "0" &&
+            calculationDisplay.innerText === ""
+          )
+            mainDisplay.innerText += e.key;
+          else if (mainDisplay.innerText === "0") {
+            mainDisplay.innerText = e.key;
+          } else if (
+            ["+", "-", "*", "/"].includes(
+              calculationDisplay.innerText.substr(-1, 1)
+            )
+          ) {
+            if (waitingInput) {
+              mainDisplay.innerText = e.key;
+              waitingInput = false;
+            } else {
+              mainDisplay.innerText += e.key;
+            }
+          }
+        }
       });
 
       //   function nextNumberPressed() {
