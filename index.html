@@ -46,6 +46,11 @@
         transition: background-color 0.5s;
       }
 
+      .buttons:hover {
+        box-shadow: 0 0 0 2px #d0d0d0;
+        transition-duration: box-shadow 0.5s;
+      }
+
       .numbers {
         background-color: dimgrey;
         color: white;
@@ -108,6 +113,7 @@
       let clearEntryButton = document.getElementById("clear-entry");
       let decimalButton = document.getElementById("decimal");
       let negativeButton = document.getElementById("negative");
+
       let waitingInput = false;
       let postPlusEquals = false;
       let postMinusEquals = false;
@@ -137,7 +143,7 @@
 
       for (let i = 0; i < numberButtons.length; i++)
         numberButtons[i].addEventListener("mousedown", function () {
-          this.style.backgroundColor = "grey";
+          this.style.backgroundColor = "lightgrey";
         });
 
       numberButtonPressed();
@@ -145,7 +151,7 @@
         for (let i = 0; i < numberButtons.length; i++) {
           numberButtons[i].addEventListener("mouseup", function () {
             if (restrictNumber > 8) return;
-            // this.style.backgroundColor = "dimgrey";
+            this.style.backgroundColor = "dimgrey";
             secondOprClicked = false;
             restrictOperator = 0;
             restrictNumber++;
@@ -358,6 +364,10 @@
           (mainDisplay.innerText = "0"), (calculationDisplay.innerText = "");
         else mainDisplay.innerText = "0";
         restrictNumber = 0;
+      });
+
+      document.body.addEventListener("keypress", (e) => {
+        console.log(e.key);
       });
 
       //   function nextNumberPressed() {
