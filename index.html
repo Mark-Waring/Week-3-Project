@@ -6,42 +6,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-      #calculator-body {
+      #calculator-body,
+      .top-row,
+      #display-screen,
+      .buttons {
         display: flex;
+      }
+
+      .top-row,
+      .buttons {
+        margin: 10px;
+      }
+
+      #calculator-body {
         flex-wrap: wrap;
         height: 95vh;
         background-color: black;
       }
 
       .top-row {
-        display: flex;
         flex-basis: calc(100% - 10px);
-        margin: 10px;
         justify-content: right;
         height: 20%;
       }
 
       #calc-display {
         display: none;
-        color: black;
+      }
+
+      #display-screen,
+      .buttons {
+        justify-content: center;
       }
 
       #display-screen {
-        display: flex;
         flex-basis: calc(25% - 15px);
-        align-items: center;
-        justify-content: center;
         align-items: flex-end;
       }
 
+      .buttons,
+      #zero {
+        border-radius: 50%;
+      }
+
       .buttons {
-        display: flex;
         flex-basis: calc(25% - 20px);
-        justify-content: center;
         align-items: center;
         background-color: lightgrey;
-        margin: 10px;
-        border-radius: 50%;
         font-size: large;
         font-family: Arial, Helvetica, sans-serif;
         transition: background-color 0.5s;
@@ -53,29 +64,22 @@
       }
 
       .numbers,
-      #decimal {
+      #decimal,
+      #equals,
+      .calculate {
         background-color: dimgrey;
         color: white;
       }
 
-      .calculate {
-        background-color: orange;
-        color: white;
-      }
-
+      .calculate,
       #equals {
         background-color: orange;
-        color: white;
       }
 
       #zero {
         flex-basis: calc(50% - 20px);
-        border-radius: 50%;
       }
 
-      #equals {
-        background-color: dimgrey;
-      }
       @media screen and (min-width: 550px) {
         .buttons,
         #zero {
@@ -88,7 +92,7 @@
     <div id="calculator-body">
       <div id="calc-display"></div>
       <div class="top-row">
-        <div id="display-screen"></div>
+        <div id="display-screen">0</div>
       </div>
       <div class="buttons" id="clear">C</div>
       <div class="buttons" id="clear-entry">CE</div>
@@ -112,29 +116,25 @@
     </div>
     <script>
       mainDisplay = document.getElementById("display-screen");
-      mainDisplay.innerText = "0";
-      let buttons = document.getElementsByClassName("buttons");
-      let numberButtons = document.getElementsByClassName("numbers");
-      let operatorButtons = document.getElementsByClassName("calculate");
-      let calculationDisplay = document.getElementById("calc-display");
-      let equalsButton = document.getElementById("equals");
-      let clearButton = document.getElementById("clear");
-      let clearEntryButton = document.getElementById("clear-entry");
-      let decimalButton = document.getElementById("decimal");
-      let negativeButton = document.getElementById("negative");
+      const displayText = mainDisplay.innerText;
+      const buttons = document.getElementsByClassName("buttons");
+      const numberButtons = document.getElementsByClassName("numbers");
+      const operatorButtons = document.getElementsByClassName("calculate");
+      const calculationDisplay = document.getElementById("calc-display");
+      const equalsButton = document.getElementById("equals");
+      const clearButton = document.getElementById("clear");
+      const clearEntryButton = document.getElementById("clear-entry");
+      const decimalButton = document.getElementById("decimal");
+      const negativeButton = document.getElementById("negative");
 
       let waitingInput = false;
       let postPlusEquals = false;
       let postMinusEquals = false;
       let postMultiplyEquals = false;
       let postDivideEquals = false;
-      let postPlus = false;
-      let postMinusPlus = false;
-      let postMultiplyPlus = false;
-      let postDividePlus = false;
-      let operatorClicked = false;
       let restrictOperator = 0;
       let restrictNumber = 0;
+      let restrictDecimal = 0;
 
       mainDisplay.style.fontFamily = "Arial, Helvetica, sans-serif";
       mainDisplay.style.fontSize = "60px";
@@ -203,7 +203,6 @@
           });
         }
       }
-      let restrictDecimal = 0;
 
       decimalButton.addEventListener("mousedown", function () {
         decimalButton.style.backgroundColor = "lightgrey";
@@ -301,8 +300,11 @@
             mainDisplay.innerText + " " + this.innerText;
         });
       }
-
-      equalsButton.addEventListener("click", function (equalsClick) {
+      equalsButton.addEventListener("mousedown", function () {
+        equalsButton.style.backgroundColor = "yellow";
+      });
+      equalsButton.addEventListener("mouseup", function (equalsClick) {
+        this.style.backgroundColor = "orange";
         restrictNumber = 0;
         let value1 = parseFloat(calculationDisplay.innerText, 10);
         let value2 = parseFloat(mainDisplay.innerText);
