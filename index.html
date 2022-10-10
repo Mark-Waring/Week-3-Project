@@ -116,7 +116,6 @@
     </div>
     <script>
       mainDisplay = document.getElementById("display-screen");
-      const displayText = mainDisplay.innerText;
       const buttons = document.getElementsByClassName("buttons");
       const numberButtons = document.getElementsByClassName("numbers");
       const operatorButtons = document.getElementsByClassName("calculate");
@@ -261,39 +260,38 @@
             calculationDisplay.innerText =
               mainDisplay.innerText + " " + this.innerText;
           else if (calculationDisplay.innerText.substr(-1, 1) === "+") {
-            let plusX = parseFloat(calculationDisplay.innerText, 10);
-            let plusY = parseFloat(mainDisplay.innerText, 10);
-            let plusZ = plusX + plusY;
-            let parseZ = parseFloat(plusZ);
-            (mainDisplay.innerText = parseZ),
-              (calculationDisplay.innerText = plusZ + " " + this.innerText),
+            let calcScreenNumber = parseFloat(calculationDisplay.innerText, 10);
+            let displayScreenNumber = parseFloat(mainDisplay.innerText, 10);
+            let newSum = calcScreenNumber + displayScreenNumber;
+            (mainDisplay.innerText = newSum),
+              (calculationDisplay.innerText = newSum + " " + this.innerText),
               (secondOprClicked = true);
             console.log(restrictOperator);
             console.log("2nd oeprator clicked true");
           } else if (calculationDisplay.innerText.substr(-1, 1) === "-") {
-            let minusX = parseFloat(calculationDisplay.innerText, 10);
-            let minusY = parseFloat(mainDisplay.innerText, 10);
-            let minusZ = minusX - minusY;
+            let calcScreenNumber = parseFloat(calculationDisplay.innerText, 10);
+            let displayScreenNumber = parseFloat(mainDisplay.innerText, 10);
+            let newDifference = calcScreenNumber - displayScreenNumber;
             console.log("second minus click logged");
-            console.log(minusZ);
-            mainDisplay.innerText = minusZ;
+            console.log(newDifference);
+            mainDisplay.innerText = newDifference;
             calculationDisplay.innerText = minusZ + " " + this.innerText;
           } else if (calculationDisplay.innerText.substr(-1, 1) === "*") {
-            let multiplyX = parseFloat(calculationDisplay.innerText, 10);
-            let multiplyY = parseFloat(mainDisplay.innerText, 10);
-            let multiplyZ = multiplyX * multiplyY;
+            let calcScreenNumber = parseFloat(calculationDisplay.innerText, 10);
+            let displayScreenNumber = parseFloat(mainDisplay.innerText, 10);
+            let newProduct = calcScreenNumber * displayScreenNumber;
             console.log("second multiply click logged");
-            console.log(multiplyZ);
-            mainDisplay.innerText = multiplyZ;
-            calculationDisplay.innerText = multiplyZ + " " + this.innerText;
+            console.log(newProduct);
+            mainDisplay.innerText = newProduct;
+            calculationDisplay.innerText = newProduct + " " + this.innerText;
           } else if (calculationDisplay.innerText.substr(-1, 1) === "/") {
-            let divideX = parseFloat(calculationDisplay.innerText, 10);
-            let divideY = parseFloat(mainDisplay.innerText, 10);
-            let divideZ = divideX / divideY;
+            let calcScreenNumber = parseFloat(calculationDisplay.innerText, 10);
+            let displayScreenNumber = parseFloat(mainDisplay.innerText, 10);
+            let newQuotient = calcScreenNumber / displayScreenNumber;
             console.log("second divide click logged");
-            console.log(divideZ);
-            mainDisplay.innerText = divideZ;
-            calculationDisplay.innerText = divideZ + " " + this.innerText;
+            console.log(newQuotient);
+            mainDisplay.innerText = newQuotient;
+            calculationDisplay.innerText = newQuotient + " " + this.innerText;
           }
 
           calculationDisplay.innerText =
@@ -307,10 +305,10 @@
         this.style.backgroundColor = "orange";
         restrictNumber = 0;
         let value1 = parseFloat(calculationDisplay.innerText, 10);
-        let value2 = parseFloat(mainDisplay.innerText);
-        let value3 = " " + value2;
+        let displayScreenNumber = parseFloat(mainDisplay.innerText);
+        let newDisplayString = " " + displayScreenNumber;
         let calcDisplayText = calculationDisplay.innerText;
-        let value4 = calcDisplayText.slice(
+        let newCalcLastChar = calcDisplayText.slice(
           calcDisplayText.indexOf("+") + 1,
           calcDisplayText.lastIndexOf("=")
         );
@@ -332,51 +330,54 @@
         );
         let displayOperator = opInCalcDisplay.charAt(0);
 
-        value5 = parseFloat(value4);
+        value5 = parseFloat(newCalcLastChar);
         value9 = parseFloat(value6);
         value10 = parseFloat(value7);
         value11 = parseFloat(value8);
         if (postPlusEquals === true && displayOperator === "+")
-          mainDisplay.innerText = value2 + value5;
+          mainDisplay.innerText = displayScreenNumber + value5;
         else if (postPlusEquals === true && displayOperator === "-")
-          mainDisplay.innerText = value2 - value9;
+          mainDisplay.innerText = displayScreenNumber - value9;
         else if (postPlusEquals === true && displayOperator === "*")
-          mainDisplay.innerText = value2 * value10;
+          mainDisplay.innerText = displayScreenNumber * value10;
         else if (postPlusEquals === true && displayOperator === "/")
-          mainDisplay.innerText = value2 / value11;
+          mainDisplay.innerText = displayScreenNumber / value11;
         else if (calculationDisplay.innerText.substr(-1, 1) === "+")
-          (mainDisplay.innerText = value1 + value2), (postPlusEquals = true);
+          (mainDisplay.innerText = value1 + displayScreenNumber),
+            (postPlusEquals = true);
         else if (postMinusEquals === true && displayOperator === "+")
-          mainDisplay.innerText = value2 + value5;
+          mainDisplay.innerText = displayScreenNumber + value5;
         else if (postMinusEquals === true && displayOperator === "-")
-          mainDisplay.innerText = value2 - value9;
+          mainDisplay.innerText = displayScreenNumber - value9;
         else if (postMinusEquals === true && displayOperator === "*")
-          mainDisplay.innerText = value2 * value10;
+          mainDisplay.innerText = displayScreenNumber * value10;
         else if (postMinusEquals === true && displayOperator === "/")
-          mainDisplay.innerText = value2 / value11;
+          mainDisplay.innerText = displayScreenNumber / value11;
         else if (calculationDisplay.innerText.substr(-1, 1) === "-")
-          (mainDisplay.innerText = value1 - value2), (postMinusEquals = true);
+          (mainDisplay.innerText = value1 - displayScreenNumber),
+            (postMinusEquals = true);
         else if (postMultiplyEquals === true && displayOperator === "+")
-          mainDisplay.innerText = value2 + value5;
+          mainDisplay.innerText = displayScreenNumber + value5;
         else if (postMultiplyEquals === true && displayOperator === "-")
-          mainDisplay.innerText = value2 - value9;
+          mainDisplay.innerText = displayScreenNumber - value9;
         else if (postMultiplyEquals === true && displayOperator === "*")
-          mainDisplay.innerText = value2 * value10;
+          mainDisplay.innerText = displayScreenNumber * value10;
         else if (postMultiplyEquals === true && displayOperator === "/")
-          mainDisplay.innerText = value2 / value11;
+          mainDisplay.innerText = displayScreenNumber / value11;
         else if (calculationDisplay.innerText.substr(-1, 1) === "*")
-          (mainDisplay.innerText = value1 * value2),
+          (mainDisplay.innerText = value1 * displayScreenNumber),
             (postMultiplyEquals = true);
         else if (postDivideEquals === true && displayOperator === "-")
-          mainDisplay.innerText = value2 - value9;
+          mainDisplay.innerText = displayScreenNumber - value9;
         else if (postDivideEquals === true && displayOperator === "*")
-          mainDisplay.innerText = value2 * value10;
+          mainDisplay.innerText = displayScreenNumber * value10;
         else if (postDivideEquals === true && displayOperator === "/")
-          mainDisplay.innerText = value2 / value11;
+          mainDisplay.innerText = displayScreenNumber / value11;
         else if (calculationDisplay.innerText.substr(-1, 1) === "/")
-          (mainDisplay.innerText = value1 / value2), (postDivideEquals = true);
+          (mainDisplay.innerText = value1 / displayScreenNumber),
+            (postDivideEquals = true);
 
-        calculationDisplay.innerText += value3 + " =";
+        calculationDisplay.innerText += newDisplayString + " =";
       });
 
       clearButton.addEventListener("mousedown", function (e) {
@@ -459,49 +460,49 @@
           )
             calculationDisplay.innerText = mainDisplay.innerText + " " + e.key;
           else if (calculationDisplay.innerText.substr(-1, 1) === "+") {
-            let plusX = parseFloat(calculationDisplay.innerText, 10);
-            let plusY = parseFloat(mainDisplay.innerText, 10);
-            let plusZ = plusX + plusY;
-            let parseZ = parseFloat(plusZ);
-            (mainDisplay.innerText = parseZ),
-              (calculationDisplay.innerText = plusZ + " " + e.key),
+            let calcScreenNumber = parseFloat(calculationDisplay.innerText, 10);
+            let displayScreenNumber = parseFloat(mainDisplay.innerText, 10);
+            let newSum = calcScreenNumber + displayScreenNumber;
+            let newSumNumber = parseFloat(newSum);
+            (mainDisplay.innerText = newSumNumber),
+              (calculationDisplay.innerText = newSum + " " + e.key),
               (secondOprClicked = true);
             console.log(restrictOperator);
             console.log("2nd oeprator clicked true");
           } else if (calculationDisplay.innerText.substr(-1, 1) === "-") {
-            let minusX = parseFloat(calculationDisplay.innerText, 10);
-            let minusY = parseFloat(mainDisplay.innerText, 10);
-            let minusZ = minusX - minusY;
+            let calcScreenNumber = parseFloat(calculationDisplay.innerText, 10);
+            let displayScreenNumber = parseFloat(mainDisplay.innerText, 10);
+            let minusZ = calcScreenNumber - displayScreenNumber;
             console.log("second minus click logged");
             console.log(minusZ);
             mainDisplay.innerText = minusZ;
             calculationDisplay.innerText = minusZ + " " + e.key;
           } else if (calculationDisplay.innerText.substr(-1, 1) === "*") {
-            let multiplyX = parseFloat(calculationDisplay.innerText, 10);
-            let multiplyY = parseFloat(mainDisplay.innerText, 10);
-            let multiplyZ = multiplyX * multiplyY;
+            let calcScreenNumber = parseFloat(calculationDisplay.innerText, 10);
+            let displayScreenNumber = parseFloat(mainDisplay.innerText, 10);
+            let newProduct = calcScreenNumber * displayScreenNumber;
             console.log("second multiply click logged");
-            console.log(multiplyZ);
-            mainDisplay.innerText = multiplyZ;
-            calculationDisplay.innerText = multiplyZ + " " + e.key;
+            console.log(newProduct);
+            mainDisplay.innerText = newProduct;
+            calculationDisplay.innerText = newProduct + " " + e.key;
           } else if (calculationDisplay.innerText.substr(-1, 1) === "/") {
-            let divideX = parseFloat(calculationDisplay.innerText, 10);
-            let divideY = parseFloat(mainDisplay.innerText, 10);
-            let divideZ = divideX / divideY;
+            let calcScreenNumber = parseFloat(calculationDisplay.innerText, 10);
+            let displayScreenNumber = parseFloat(mainDisplay.innerText, 10);
+            let newQuotient = calcScreenNumber / displayScreenNumber;
             console.log("second divide click logged");
-            console.log(divideZ);
-            mainDisplay.innerText = divideZ;
-            calculationDisplay.innerText = divideZ + " " + e.key;
+            console.log(newQuotient);
+            mainDisplay.innerText = newQuotient;
+            calculationDisplay.innerText = newQuotient + " " + e.key;
           }
 
           calculationDisplay.innerText = mainDisplay.innerText + " " + e.key;
         } else if ((e.key = "Enter")) {
           restrictNumber = 0;
           let value1 = parseFloat(calculationDisplay.innerText, 10);
-          let value2 = parseFloat(mainDisplay.innerText);
-          let value3 = " " + value2;
+          let displayScreenNumber = parseFloat(mainDisplay.innerText);
+          let newDisplayString = " " + displayScreenNumber;
           let calcDisplayText = calculationDisplay.innerText;
-          let value4 = calcDisplayText.slice(
+          let newCalcLastChar = calcDisplayText.slice(
             calcDisplayText.indexOf("+") + 1,
             calcDisplayText.lastIndexOf("=")
           );
@@ -523,52 +524,54 @@
           );
           let displayOperator = opInCalcDisplay.charAt(0);
 
-          value5 = parseFloat(value4);
+          value5 = parseFloat(newCalcLastChar);
           value9 = parseFloat(value6);
           value10 = parseFloat(value7);
           value11 = parseFloat(value8);
           if (postPlusEquals === true && displayOperator === "+")
-            mainDisplay.innerText = value2 + value5;
+            mainDisplay.innerText = displayScreenNumber + newCalcDisplayNumber;
           else if (postPlusEquals === true && displayOperator === "-")
-            mainDisplay.innerText = value2 - value9;
+            mainDisplay.innerText = displayScreenNumber - value9;
           else if (postPlusEquals === true && displayOperator === "*")
-            mainDisplay.innerText = value2 * value10;
+            mainDisplay.innerText = displayScreenNumber * value10;
           else if (postPlusEquals === true && displayOperator === "/")
-            mainDisplay.innerText = value2 / value11;
+            mainDisplay.innerText = displayScreenNumber / value11;
           else if (calculationDisplay.innerText.substr(-1, 1) === "+")
-            (mainDisplay.innerText = value1 + value2), (postPlusEquals = true);
+            (mainDisplay.innerText = value1 + displayScreenNumber),
+              (postPlusEquals = true);
           else if (postMinusEquals === true && displayOperator === "+")
-            mainDisplay.innerText = value2 + value5;
+            mainDisplay.innerText = displayScreenNumber + newCalcDisplayNumber;
           else if (postMinusEquals === true && displayOperator === "-")
-            mainDisplay.innerText = value2 - value9;
+            mainDisplay.innerText = displayScreenNumber - value9;
           else if (postMinusEquals === true && displayOperator === "*")
-            mainDisplay.innerText = value2 * value10;
+            mainDisplay.innerText = displayScreenNumber * value10;
           else if (postMinusEquals === true && displayOperator === "/")
-            mainDisplay.innerText = value2 / value11;
+            mainDisplay.innerText = displayScreenNumber / value11;
           else if (calculationDisplay.innerText.substr(-1, 1) === "-")
-            (mainDisplay.innerText = value1 - value2), (postMinusEquals = true);
+            (mainDisplay.innerText = value1 - displayScreenNumber),
+              (postMinusEquals = true);
           else if (postMultiplyEquals === true && displayOperator === "+")
-            mainDisplay.innerText = value2 + value5;
+            mainDisplay.innerText = displayScreenNumber + newCalcDisplayNumber;
           else if (postMultiplyEquals === true && displayOperator === "-")
-            mainDisplay.innerText = value2 - value9;
+            mainDisplay.innerText = displayScreenNumber - value9;
           else if (postMultiplyEquals === true && displayOperator === "*")
-            mainDisplay.innerText = value2 * value10;
+            mainDisplay.innerText = displayScreenNumber * value10;
           else if (postMultiplyEquals === true && displayOperator === "/")
-            mainDisplay.innerText = value2 / value11;
+            mainDisplay.innerText = displayScreenNumber / value11;
           else if (calculationDisplay.innerText.substr(-1, 1) === "*")
-            (mainDisplay.innerText = value1 * value2),
+            (mainDisplay.innerText = value1 * displayScreenNumber),
               (postMultiplyEquals = true);
           else if (postDivideEquals === true && displayOperator === "-")
-            mainDisplay.innerText = value2 - value9;
+            mainDisplay.innerText = displayScreenNumber - value9;
           else if (postDivideEquals === true && displayOperator === "*")
-            mainDisplay.innerText = value2 * value10;
+            mainDisplay.innerText = displayScreenNumber * value10;
           else if (postDivideEquals === true && displayOperator === "/")
-            mainDisplay.innerText = value2 / value11;
+            mainDisplay.innerText = displayScreenNumber / value11;
           else if (calculationDisplay.innerText.substr(-1, 1) === "/")
-            (mainDisplay.innerText = value1 / value2),
+            (mainDisplay.innerText = value1 / displayScreenNumber),
               (postDivideEquals = true);
 
-          calculationDisplay.innerText += value3 + " =";
+          calculationDisplay.innerText += newDisplayString + " =";
         } else if ((e.key = ".")) {
           console.log("picking up enter as .");
           secondOprClicked = false;
@@ -602,115 +605,6 @@
           }
         }
       });
-
-      //   function nextNumberPressed() {
-      //     for (let i = 0; i < operatorButtons.length; i++) {
-      //       operatorButtons[i].addEventListener("click", function () {
-      //         calculationDisplay.innerText = mainDisplay.innerText;
-      //       });
-      //     }
-      //     if (
-      //       mainDisplay.innerText === "0" ||
-      //       calculationDisplay.innerText.substr(-1, 1) === "+" ||
-      //       calculationDisplay.innerText.substr(-1, 1) === "-" ||
-      //       calculationDisplay.innerText.substr(-1, 1) === "*" ||
-      //       calculationDisplay.innerText.substr(-1, 1) === "/"
-      //     )
-      //       mainDisplay.innerText = this.innerText;
-      //   }
-
-      //   function nextCalculation() {
-      //     for (let i = 0; i < numberButtons.length; i++) {
-      //       operatorButtons[i].addEventListener("click", function () {
-      //         calculationDisplay.innerText = mainDisplay.innerText;
-      //       });
-      //     }
-      //   }
-
-      //   if (calculationDisplay.innerText.substr(-1, 1) === "-")
-      //     mainDisplay.innerText = valueX - valueY;
-      //   if (calculationDisplay.innerText.substr(-1, 1) === "x")
-      //     mainDisplay.innerText = valueX * valueY;
-      //   if (calculationDisplay.innerText.substr(-1, 1) === "/")
-      //     mainDisplay.innerText = valueX / valueY;
-      //   calculationDisplay.innerText += valueZ + " =";
-
-      // )
-      //   calculationDisplay.innerText = mainDisplay.innerText;
-      // else if (calculationDisplay.innerText.substr(-1, 1) === "+")
-      //   mainDisplay.innerText = value1 + value2;
-      // else if (calculationDisplay.innerText.substr(-1, 1) === "-")
-      //   mainDisplay.innerText = value1 - value2;
-      // else if (calculationDisplay.innerText.substr(-1, 1) === "x")
-      //   mainDisplay.innerText = value1 * value2;
-      // else if (calculationDisplay.innerText.substr(-1, 1) === "/")
-      //   mainDisplay.innerText = value1 / value2;
-      // calculationDisplay.innerText += value3 + " =";
-      // let value1 = parseFloat(calculationDisplay.innerText, 10);
-
-      //   function firstOperatorPressed() {
-      //     for (let i = 0; i < calculateButtons.length; i++) {
-      //       calculateButtons[i].addEventListener("click", function () {
-      //         return mainDisplay.innerText;
-      //       });
-      //     }
-      //   }
-
-      //   console.log(mainDisplay.innerText);
-
-      //   function mathOperator() {
-      //     for (let i = 0; i < calculateButtons.length; i++) {
-      //       calculateButtons[i].addEventListener("click", function () {});
-      //       return calculateButtons.innerText;
-      //     }
-      //     // calculateButtons.disabled = true;
-      //   }
-
-      //   function displaySecondEntry() {
-      //     for (let i = 0; i < numberButtons.length; i++) {
-      //       numberButtons[i].addEventListener("click", function () {
-      //         console.log(this.innerText + " clicked.");
-      //         if (mainDisplay.innerText === "0") {
-      //           mainDisplay.innerText = this.innerText;
-      //         } else {
-      //           mainDisplay.innerText += this.innerText;
-      //         }
-      //       });
-      //     }
-      //   }
-
-      //   function finalizeSecondEntry() {
-      //     for (let i = 0; i < calculateButtons.length; i++) {
-      //       calculateButtons[i].addEventListener("click", function () {});
-      //       return calculateButtons.innerText;
-      //     }
-      //     // calculateButtons.disabled = true;
-      //   }
-
-      //   console.log(firstNumberEntry);
-      //   //   function runCalculation (){
-      //   //     displayInitialEntry mathOperator displaySecondEntry;
-      //   //   }
-
-      //   //   function calculation() {
-      //   //     firstNumberEntry + currentNumberEntry;
-      //   //     mainDisplay.innerText = calculation;
-      //   //     return calculation;
-      //   //   }
-
-      //   //   calculation();
-
-      //   //   if(mainDisplay.innerText === "0"){
-      //   //               mainDisplay.innerText = this.innerText;
-      //   //             }
-      //   //             else
-      //   //             {mainDisplay.innerText += this.innerText;
-      //   //           });
-      //   //         }
-
-      //   // document.body.addeventlistener(keypress), e =>
-      //   // if e.key === "5"(
-      //   // console.log(e.key)""
     </script>
   </body>
 </html>
