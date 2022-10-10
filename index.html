@@ -23,6 +23,7 @@
 
       #calc-display {
         display: none;
+        color: black;
       }
 
       #display-screen {
@@ -51,21 +52,29 @@
         transition-duration: box-shadow 0.5s;
       }
 
-      .numbers {
+      .numbers,
+      #decimal {
         background-color: dimgrey;
         color: white;
-        transition: background-color 0.5s;
       }
 
       .calculate {
-        background-color: gold;
+        background-color: orange;
         color: white;
-        transition: background-color 0.5s;
+      }
+
+      #equals {
+        background-color: orange;
+        color: white;
       }
 
       #zero {
         flex-basis: calc(50% - 20px);
         border-radius: 50%;
+      }
+
+      #equals {
+        background-color: dimgrey;
       }
       @media screen and (min-width: 550px) {
         .buttons,
@@ -134,9 +143,13 @@
       calculationDisplay.style.fontFamily = "Arial, Helvetica, sans-serif";
       calculationDisplay.style.fontSize = "20px";
       calculationDisplay.style.color = "white";
-      calculationDisplay.style.display = "block";
 
-      negativeButton.addEventListener("click", function () {
+      negativeButton.addEventListener("mousedown", function () {
+        negativeButton.style.backgroundColor = "white";
+      });
+
+      negativeButton.addEventListener("mouseup", function () {
+        negativeButton.style.backgroundColor = "lightgrey";
         let mainDisplayNumber = parseFloat(mainDisplay.innerText, 10);
         mainDisplay.innerText = mainDisplayNumber * -1;
       });
@@ -146,15 +159,21 @@
           this.style.backgroundColor = "lightgrey";
         });
 
+      for (let i = 0; i < operatorButtons.length; i++)
+        operatorButtons[i].addEventListener("mousedown", function () {
+          this.style.backgroundColor = "yellow";
+        });
+
       numberButtonPressed();
       function numberButtonPressed() {
         for (let i = 0; i < numberButtons.length; i++) {
           numberButtons[i].addEventListener("mouseup", function () {
-            if (restrictNumber > 8) return;
             this.style.backgroundColor = "dimgrey";
+            if (restrictNumber > 8) return;
             secondOprClicked = false;
             restrictOperator = 0;
             restrictNumber++;
+
             console.log("second operator clicked false");
 
             if (
@@ -185,9 +204,15 @@
         }
       }
       let restrictDecimal = 0;
+
+      decimalButton.addEventListener("mousedown", function () {
+        decimalButton.style.backgroundColor = "lightgrey";
+      });
+
       decimalButtonPressed();
       function decimalButtonPressed() {
-        decimal.addEventListener("click", function () {
+        decimal.addEventListener("mouseup", function () {
+          this.style.backgroundColor = "dimgrey";
           secondOprClicked = false;
           restrictOperator = 0;
           restrictDecimal++;
@@ -220,16 +245,15 @@
         });
       }
 
-      // restrictOperator = true if secondOPerator is true and
-
       for (let i = 0; i < operatorButtons.length; i++) {
-        operatorButtons[i].addEventListener("click", function () {
+        operatorButtons[i].addEventListener("mouseup", function () {
           waitingInput = true;
           numberClicked = false;
           secondOprClicked = false;
           restrictDecimal = 0;
           restrictNumber = 0;
           restrictOperator++;
+          this.style.backgroundColor = "orange";
           if (
             (calculationDisplay.innerText === "" &&
               mainDisplay.innerText !== "0") ||
@@ -353,13 +377,22 @@
         calculationDisplay.innerText += value3 + " =";
       });
 
-      clearButton.addEventListener("click", function (clearClick) {
+      clearButton.addEventListener("mousedown", function (e) {
+        clearButton.style.backgroundColor = "white";
+      });
+      clearButton.addEventListener("mouseup", function (e) {
+        clearButton.style.backgroundColor = "lightgrey";
         mainDisplay.innerText = "0";
         calculationDisplay.innerText = "";
         restrictNumber = 0;
       });
 
-      clearEntryButton.addEventListener("click", function (clearEntryClick) {
+      clearEntryButton.addEventListener("mousedown", function (e) {
+        clearEntryButton.style.backgroundColor = "white";
+      });
+
+      clearEntryButton.addEventListener("mouseup", function (e) {
+        clearEntryButton.style.backgroundColor = "lightgrey";
         if (calculationDisplay.innerText.includes("="))
           (mainDisplay.innerText = "0"), (calculationDisplay.innerText = "");
         else mainDisplay.innerText = "0";
