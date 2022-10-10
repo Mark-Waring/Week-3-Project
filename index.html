@@ -139,6 +139,7 @@
       mainDisplay.style.fontFamily = "Arial, Helvetica, sans-serif";
       mainDisplay.style.fontSize = "60px";
       mainDisplay.style.color = "white";
+      /// is it possible with our current tools to reduce text size based on string length?
 
       calculationDisplay.style.fontFamily = "Arial, Helvetica, sans-serif";
       calculationDisplay.style.fontSize = "20px";
@@ -244,6 +245,7 @@
         });
       }
 
+      // couldn't figure out how to make op buttons' background change until another button is pressed
       for (let i = 0; i < operatorButtons.length; i++) {
         operatorButtons[i].addEventListener("mouseup", function () {
           waitingInput = true;
