@@ -1,4 +1,5 @@
 mainDisplay = document.getElementById("display-screen");
+// why does setting mainDisplay.innerText as a variable break everything?
 const buttons = document.getElementsByClassName("buttons");
 const numberButtons = document.getElementsByClassName("numbers");
 const operatorButtons = document.getElementsByClassName("calculate");
@@ -21,6 +22,7 @@ let restrictDecimal = 0;
 mainDisplay.style.fontFamily = "Arial, Helvetica, sans-serif";
 mainDisplay.style.fontSize = "60px";
 mainDisplay.style.color = "white";
+/// is it possible with our current tools to reduce text font size based on string length?
 
 calculationDisplay.style.fontFamily = "Arial, Helvetica, sans-serif";
 calculationDisplay.style.fontSize = "20px";
@@ -52,11 +54,8 @@ function numberButtonPressed() {
     numberButtons[i].addEventListener("mouseup", function () {
       this.style.backgroundColor = "dimgrey";
       if (restrictNumber > 8) return;
-      secondOprClicked = false;
       restrictOperator = 0;
       restrictNumber++;
-
-      console.log("second operator clicked false");
 
       if (
         mainDisplay.innerText === "0" &&
@@ -94,10 +93,8 @@ decimalButtonPressed();
 function decimalButtonPressed() {
   decimal.addEventListener("mouseup", function () {
     this.style.backgroundColor = "dimgrey";
-    secondOprClicked = false;
     restrictOperator = 0;
     restrictDecimal++;
-    console.log("second operator clicked false");
     if (restrictDecimal > 1) return;
     if (
       mainDisplay.innerText === "0" &&
@@ -126,11 +123,11 @@ function decimalButtonPressed() {
   });
 }
 
+// couldn't figure out how to make op buttons' background change until a different button is pressed
 for (let i = 0; i < operatorButtons.length; i++) {
   operatorButtons[i].addEventListener("mouseup", function () {
     waitingInput = true;
     numberClicked = false;
-    secondOprClicked = false;
     restrictDecimal = 0;
     restrictNumber = 0;
     restrictOperator++;
@@ -147,32 +144,23 @@ for (let i = 0; i < operatorButtons.length; i++) {
       let displayScreenNumber = parseFloat(mainDisplay.innerText, 10);
       let newSum = calcScreenNumber + displayScreenNumber;
       (mainDisplay.innerText = newSum),
-        (calculationDisplay.innerText = newSum + " " + this.innerText),
-        (secondOprClicked = true);
-      console.log(restrictOperator);
-      console.log("2nd oeprator clicked true");
+        (calculationDisplay.innerText = newSum + " " + this.innerText);
     } else if (calculationDisplay.innerText.substr(-1, 1) === "-") {
       let calcScreenNumber = parseFloat(calculationDisplay.innerText, 10);
       let displayScreenNumber = parseFloat(mainDisplay.innerText, 10);
       let newDifference = calcScreenNumber - displayScreenNumber;
-      console.log("second minus click logged");
-      console.log(newDifference);
       mainDisplay.innerText = newDifference;
-      calculationDisplay.innerText = minusZ + " " + this.innerText;
+      calculationDisplay.innerText = newDifference + " " + this.innerText;
     } else if (calculationDisplay.innerText.substr(-1, 1) === "*") {
       let calcScreenNumber = parseFloat(calculationDisplay.innerText, 10);
       let displayScreenNumber = parseFloat(mainDisplay.innerText, 10);
       let newProduct = calcScreenNumber * displayScreenNumber;
-      console.log("second multiply click logged");
-      console.log(newProduct);
       mainDisplay.innerText = newProduct;
       calculationDisplay.innerText = newProduct + " " + this.innerText;
     } else if (calculationDisplay.innerText.substr(-1, 1) === "/") {
       let calcScreenNumber = parseFloat(calculationDisplay.innerText, 10);
       let displayScreenNumber = parseFloat(mainDisplay.innerText, 10);
       let newQuotient = calcScreenNumber / displayScreenNumber;
-      console.log("second divide click logged");
-      console.log(newQuotient);
       mainDisplay.innerText = newQuotient;
       calculationDisplay.innerText = newQuotient + " " + this.innerText;
     }
@@ -299,10 +287,8 @@ document.body.addEventListener("keydown", (e) => {
     e.key === "0"
   ) {
     if (restrictNumber > 8) return;
-    secondOprClicked = false;
     restrictOperator = 0;
     restrictNumber++;
-    console.log("second operator clicked false");
 
     if (
       mainDisplay.innerText === "0" &&
@@ -332,7 +318,6 @@ document.body.addEventListener("keydown", (e) => {
   if (e.key === "+" || e.key === "-" || e.key === "*" || e.key === "/") {
     waitingInput = true;
     numberClicked = false;
-    secondOprClicked = false;
     restrictDecimal = 0;
     restrictNumber = 0;
     restrictOperator++;
@@ -348,32 +333,23 @@ document.body.addEventListener("keydown", (e) => {
       let newSum = calcScreenNumber + displayScreenNumber;
       let newSumNumber = parseFloat(newSum);
       (mainDisplay.innerText = newSumNumber),
-        (calculationDisplay.innerText = newSum + " " + e.key),
-        (secondOprClicked = true);
-      console.log(restrictOperator);
-      console.log("2nd oeprator clicked true");
+        (calculationDisplay.innerText = newSum + " " + e.key);
     } else if (calculationDisplay.innerText.substr(-1, 1) === "-") {
       let calcScreenNumber = parseFloat(calculationDisplay.innerText, 10);
       let displayScreenNumber = parseFloat(mainDisplay.innerText, 10);
-      let minusZ = calcScreenNumber - displayScreenNumber;
-      console.log("second minus click logged");
-      console.log(minusZ);
-      mainDisplay.innerText = minusZ;
-      calculationDisplay.innerText = minusZ + " " + e.key;
+      let newDifference = calcScreenNumber - displayScreenNumber;
+      mainDisplay.innerText = newDifference;
+      calculationDisplay.innerText = newDifference + " " + e.key;
     } else if (calculationDisplay.innerText.substr(-1, 1) === "*") {
       let calcScreenNumber = parseFloat(calculationDisplay.innerText, 10);
       let displayScreenNumber = parseFloat(mainDisplay.innerText, 10);
       let newProduct = calcScreenNumber * displayScreenNumber;
-      console.log("second multiply click logged");
-      console.log(newProduct);
       mainDisplay.innerText = newProduct;
       calculationDisplay.innerText = newProduct + " " + e.key;
     } else if (calculationDisplay.innerText.substr(-1, 1) === "/") {
       let calcScreenNumber = parseFloat(calculationDisplay.innerText, 10);
       let displayScreenNumber = parseFloat(mainDisplay.innerText, 10);
       let newQuotient = calcScreenNumber / displayScreenNumber;
-      console.log("second divide click logged");
-      console.log(newQuotient);
       mainDisplay.innerText = newQuotient;
       calculationDisplay.innerText = newQuotient + " " + e.key;
     }
@@ -456,11 +432,8 @@ document.body.addEventListener("keydown", (e) => {
 
     calculationDisplay.innerText += newDisplayString + " =";
   } else if ((e.key = ".")) {
-    console.log("picking up enter as .");
-    secondOprClicked = false;
     restrictOperator = 0;
     restrictDecimal++;
-    console.log("second operator clicked false");
     if (restrictDecimal > 1) return;
     if (
       mainDisplay.innerText === "0" &&
